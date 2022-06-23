@@ -2,9 +2,13 @@ import 'package:boring_form_builder/src/boring_field.dart';
 import 'package:flutter/material.dart';
 
 class BoringSection extends StatelessWidget {
-  BoringSection(
-      {Key? key, this.title, this.subtitle, required List<BoringField> fields})
-      : fields = fields.map((field) {
+  BoringSection({
+    Key? key,
+    this.title,
+    this.subtitle,
+    required List<BoringField> fields,
+    this.jsonKey,
+  })  : fields = fields.map((field) {
           final newField = field.copyWithController();
           return newField;
         }).toList(),
@@ -12,6 +16,7 @@ class BoringSection extends StatelessWidget {
 
   final String? title;
   final String? subtitle;
+  final String? jsonKey;
   final List<BoringField> fields;
 
   @override
@@ -40,5 +45,13 @@ class BoringSection extends StatelessWidget {
     for (var field in fields) {
       field.controller?.reset();
     }
+  }
+
+  Map<String, dynamic> getValue() {
+    final valuesMap = <String, dynamic>{};
+    for (var field in fields) {
+      valuesMap[field.jsonKey] = field.controller?.value;
+    }
+    return valuesMap;
   }
 }

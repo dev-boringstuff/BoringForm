@@ -40,14 +40,14 @@ class BoringTextField extends StatefulWidget implements BoringField<String> {
 
 class _BoringTextFieldState extends State<BoringTextField>
     implements BoringFieldState<String> {
-  late String? value = widget.initialValue;
-  final controller = TextEditingController();
+  final textController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    controller.text = value ?? '';
+    widget.controller?.value = widget.initialValue;
+    textController.text = widget.controller?.value ?? '';
 
     widget.controller?.addListener(() {
       if ((widget.controller?.shouldReset ?? false) &&
@@ -60,9 +60,9 @@ class _BoringTextFieldState extends State<BoringTextField>
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
+      controller: textController,
       onChanged: (v) => setState(() {
-        value = v;
+        widget.controller?.value = v;
       }),
       decoration: InputDecoration(
         label: Text(widget.label),
@@ -75,10 +75,8 @@ class _BoringTextFieldState extends State<BoringTextField>
   void reset() {
     widget.controller?.shouldReset = false;
     widget.controller?.isResetting = true;
-    setState(() {
-      value = widget.initialValue;
-    });
-    controller.text = value ?? '';
+    widget.controller?.value = widget.initialValue;
+    textController.text = widget.controller?.value ?? '';
     widget.controller?.isResetting = false;
   }
 }

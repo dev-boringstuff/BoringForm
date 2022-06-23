@@ -37,77 +37,91 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('boring_form_builder example')),
-      body: ListView(
-        children: [
-          BoringForm(
-            controller: form1Controller,
-            title: 'Form 1 title',
-            subtitle: 'Form 1 subtitle',
-            sections: [
-              BoringSection(
-                title: 'Section 1.1 title',
-                fields: const [
-                  BoringTextField(
-                    jsonKey: 'jsonKey1',
-                    label: 'label1',
-                    helperText: 'helperText1',
+      body: Container(
+        color: Colors.grey[300],
+        child: ListView(
+          children: [
+            Card(
+              child: BoringForm(
+                controller: form1Controller,
+                title: 'Form 1 title',
+                subtitle: 'Form 1 subtitle',
+                sections: [
+                  BoringSection(
+                    title: 'Section 1.1 title',
+                    fields: const [
+                      BoringTextField(
+                        jsonKey: 'jsonKey1',
+                        label: 'label1',
+                        helperText: 'helperText1',
+                      ),
+                    ],
                   ),
+                  BoringSection(
+                    subtitle: 'Section 1.2 subtitle',
+                    fields: [
+                      const BoringTextField(
+                        jsonKey: 'jsonKey2',
+                        label: 'label2',
+                        initialValue: 'initial value',
+                      ),
+                      BoringTextField(
+                        jsonKey: 'jsonKey3',
+                        label: 'label3',
+                        controller: textFieldController,
+                        initialValue: 'with given controller',
+                      ),
+                    ],
+                  )
                 ],
               ),
-              BoringSection(
-                subtitle: 'Section 1.2 subtitle',
-                fields: [
-                  const BoringTextField(
-                    jsonKey: 'jsonKey2',
-                    label: 'label2',
-                    initialValue: 'initial value',
-                  ),
-                  BoringTextField(
-                    jsonKey: 'jsonKey3',
-                    label: 'label3',
-                    controller: textFieldController,
-                    initialValue: 'with given controller',
-                  ),
-                ],
-              )
-            ],
-          ),
-          BoringForm(
-            controller: form2Controller,
-            title: 'Form 2 title',
-            sections: [
-              BoringSection(
-                title: 'Section 2.1 title',
-                fields: const [
-                  BoringTextField(
-                    jsonKey: 'jsonKey1',
-                    label: 'label1',
-                    helperText: 'helperText1',
-                  ),
-                ],
-              ),
-            ],
-          ),
-          IntrinsicWidth(
-            child: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    form1Controller.reset();
-                  },
-                  child: const Text('Reset 1'),
-                ),
-                const SizedBox(height: 4),
-                ElevatedButton(
-                  onPressed: () {
-                    form2Controller.reset();
-                  },
-                  child: const Text('Reset 2'),
-                ),
-              ],
             ),
-          ),
-        ],
+            Card(
+              child: BoringForm(
+                controller: form2Controller,
+                title: 'Form 2 title',
+                sections: [
+                  BoringSection(
+                    title: 'Section 2.1 title',
+                    fields: const [
+                      BoringTextField(
+                        jsonKey: 'jsonKey1',
+                        label: 'label4',
+                        helperText: 'helperText2',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            IntrinsicWidth(
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      form1Controller.reset();
+                    },
+                    child: const Text('Reset 1'),
+                  ),
+                  const SizedBox(height: 4),
+                  ElevatedButton(
+                    onPressed: () {
+                      debugPrint(form1Controller.getValue().toString());
+                    },
+                    child: const Text('Get values 1'),
+                  ),
+                  const SizedBox(height: 4),
+                  ElevatedButton(
+                    onPressed: () {
+                      form2Controller.reset();
+                    },
+                    child: const Text('Reset 2'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

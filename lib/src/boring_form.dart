@@ -28,6 +28,11 @@ class _BoringFormState extends State<BoringForm> {
       if (widget.controller.shouldReset && !widget.controller.isResetting) {
         _reset();
       }
+
+      if (widget.controller.shouldGetValue &&
+          !widget.controller.isGettingValue) {
+        _getValue();
+      }
     });
   }
 
@@ -66,5 +71,21 @@ class _BoringFormState extends State<BoringForm> {
       section.reset();
     }
     widget.controller.isResetting = false;
+  }
+
+  void _getValue() {
+    widget.controller.shouldGetValue = false;
+    widget.controller.isGettingValue = true;
+    final newValue = <String, dynamic>{};
+    for (var section in widget.sections) {
+      if (section.jsonKey != null) {
+        newValue[section.jsonKey!] = section.getValue();
+      } else {
+        final sectionValue = section.getValue();
+        sectionValue.forEach((k, v) => newValue[k] = v);
+      }
+    }
+    widget.controller.receivedValue = newValue;
+    widget.controller.isGettingValue = false;
   }
 }
