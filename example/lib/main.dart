@@ -132,11 +132,18 @@ class _HomePageState extends State<HomePage> {
                       title: 'Form 2',
                       sections: [
                         BoringSection(
-                          fields: const [
+                          fields: [
                             BoringTextField(
                               jsonKey: 'test',
                               label: 'Test field',
                               obscureText: true,
+                              validator: (v) {
+                                if ((v?.length ?? 0) <= 5) {
+                                  return 'bug should be longer than 5 chars';
+                                } else {
+                                  return null;
+                                }
+                              },
                             ),
                           ],
                         ),
@@ -158,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 4),
                 ElevatedButton(
                   onPressed: () {
-                    debugPrint(form1Controller.getValue().toString());
+                    debugPrint(form1Controller.value.toString());
                   },
                   child: const Text('Get values 1'),
                 ),
@@ -168,6 +175,13 @@ class _HomePageState extends State<HomePage> {
                     form2Controller.reset();
                   },
                   child: const Text('Reset 2'),
+                ),
+                const SizedBox(height: 4),
+                ElevatedButton(
+                  onPressed: () {
+                    debugPrint(form2Controller.valid.toString());
+                  },
+                  child: const Text('Get valid 2'),
                 ),
               ],
             ),

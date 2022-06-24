@@ -12,10 +12,14 @@ class BoringFormController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic>? getValue() {
+  Map<String, dynamic>? get value {
     shouldGetValue = true;
     notifyListeners();
 
     return receivedValue;
+  }
+
+  bool get valid {
+    return value != null;
   }
 }
