@@ -10,6 +10,9 @@ class BoringTextField extends StatefulWidget implements BoringField<String> {
     this.helperText,
     this.initialValue,
     this.controller,
+    this.obscureText = false,
+    this.enableSuggestions = true,
+    this.autocorrect = true,
   }) : super(key: key);
 
   @override
@@ -20,6 +23,9 @@ class BoringTextField extends StatefulWidget implements BoringField<String> {
   final String? helperText;
   @override
   final String? initialValue;
+  final bool obscureText;
+  final bool enableSuggestions;
+  final bool autocorrect;
   @override
   final BoringFieldController<String>? controller;
 
@@ -30,6 +36,9 @@ class BoringTextField extends StatefulWidget implements BoringField<String> {
       label: label,
       helperText: helperText,
       initialValue: initialValue,
+      obscureText: obscureText,
+      enableSuggestions: enableSuggestions,
+      autocorrect: autocorrect,
       controller: controller ?? BoringFieldController<String>(),
     );
   }
@@ -61,9 +70,10 @@ class _BoringTextFieldState extends State<BoringTextField>
   Widget build(BuildContext context) {
     return TextFormField(
       controller: textController,
-      onChanged: (v) => setState(() {
-        widget.controller?.value = v;
-      }),
+      obscureText: widget.obscureText,
+      enableSuggestions: widget.enableSuggestions,
+      autocorrect: widget.autocorrect,
+      onChanged: (v) => widget.controller?.value = v,
       decoration: InputDecoration(
         label: Text(widget.label),
         helperText: widget.helperText,

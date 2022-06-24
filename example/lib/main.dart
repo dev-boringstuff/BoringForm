@@ -8,7 +8,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,86 +38,123 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(title: const Text('boring_form_builder example')),
       body: Container(
         color: Colors.grey[300],
-        child: ListView(
+        child: Row(
           children: [
-            Card(
-              child: BoringForm(
-                controller: form1Controller,
-                title: 'Form 1 title',
-                subtitle: 'Form 1 subtitle',
-                sections: [
-                  BoringSection(
-                    title: 'Section 1.1 title',
-                    fields: const [
-                      BoringTextField(
-                        jsonKey: 'jsonKey1',
-                        label: 'label1',
-                        helperText: 'helperText1',
-                      ),
-                    ],
-                  ),
-                  BoringSection(
-                    subtitle: 'Section 1.2 subtitle',
-                    fields: [
-                      const BoringTextField(
-                        jsonKey: 'jsonKey2',
-                        label: 'label2',
-                        initialValue: 'initial value',
-                      ),
-                      BoringTextField(
-                        jsonKey: 'jsonKey3',
-                        label: 'label3',
-                        controller: textFieldController,
-                        initialValue: 'with given controller',
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Card(
-              child: BoringForm(
-                controller: form2Controller,
-                title: 'Form 2 title',
-                sections: [
-                  BoringSection(
-                    title: 'Section 2.1 title',
-                    fields: const [
-                      BoringTextField(
-                        jsonKey: 'jsonKey1',
-                        label: 'label4',
-                        helperText: 'helperText2',
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            IntrinsicWidth(
-              child: Column(
+            Expanded(
+              child: ListView(
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      form1Controller.reset();
-                    },
-                    child: const Text('Reset 1'),
+                  Card(
+                    child: BoringForm(
+                      controller: form1Controller,
+                      title: 'Boring form',
+                      subtitle: 'Boring subtitle',
+                      sections: [
+                        BoringSection(
+                          title: 'Identity',
+                          jsonKey: 'identity',
+                          fields: const [
+                            BoringTextField(
+                              jsonKey: 'name',
+                              label: 'Name',
+                              helperText: 'First name',
+                              initialValue: 'Andrea',
+                            ),
+                            BoringTextField(
+                              jsonKey: 'surname',
+                              label: 'Surname',
+                            ),
+                            BoringPasswordField(
+                              jsonKey: 'password',
+                              label: 'Password',
+                            ),
+                          ],
+                        ),
+                        BoringSection(
+                          title: 'Contacts',
+                          jsonKey: 'contacts',
+                          fields: const [
+                            BoringTextField(
+                              jsonKey: 'city',
+                              label: 'city',
+                              initialValue: 'Rome',
+                            ),
+                            BoringTextField(
+                              jsonKey: 'cap',
+                              label: 'cap',
+                              helperText: 'xxxxx',
+                            ),
+                          ],
+                        ),
+                        BoringSection(
+                          title: 'Buggy section 1',
+                          jsonKey: 'bug',
+                          fields: const [
+                            BoringTextField(
+                              jsonKey: 'bug1',
+                              label: 'bug1',
+                            ),
+                            BoringTextField(
+                              jsonKey: 'bug2',
+                              label: 'bug2',
+                            ),
+                          ],
+                        ),
+                        BoringSection(
+                          title: 'Buggy section 2',
+                          fields: const [
+                            BoringTextField(
+                              jsonKey: 'bug',
+                              label: 'bug',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 4),
-                  ElevatedButton(
-                    onPressed: () {
-                      debugPrint(form1Controller.getValue().toString());
-                    },
-                    child: const Text('Get values 1'),
-                  ),
-                  const SizedBox(height: 4),
-                  ElevatedButton(
-                    onPressed: () {
-                      form2Controller.reset();
-                    },
-                    child: const Text('Reset 2'),
+                  Card(
+                    child: BoringForm(
+                      controller: form2Controller,
+                      title: 'Form 2',
+                      sections: [
+                        BoringSection(
+                          fields: const [
+                            BoringTextField(
+                              jsonKey: 'test',
+                              label: 'Test field',
+                              obscureText: true,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
+            ),
+            Column(
+              children: [
+                const SizedBox(height: 4),
+                ElevatedButton(
+                  onPressed: () {
+                    form1Controller.reset();
+                  },
+                  child: const Text('Reset 1'),
+                ),
+                const SizedBox(height: 4),
+                ElevatedButton(
+                  onPressed: () {
+                    debugPrint(form1Controller.getValue().toString());
+                  },
+                  child: const Text('Get values 1'),
+                ),
+                const SizedBox(height: 4),
+                ElevatedButton(
+                  onPressed: () {
+                    form2Controller.reset();
+                  },
+                  child: const Text('Reset 2'),
+                ),
+              ],
             ),
           ],
         ),
