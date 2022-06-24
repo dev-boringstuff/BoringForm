@@ -2,10 +2,11 @@ import 'package:boring_form_builder/src/boring_field.dart';
 import 'package:boring_form_builder/src/boring_field_controller.dart';
 import 'package:boring_form_builder/src/boring_field_with_validation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class BoringTextField extends StatefulWidget
-    implements BoringFieldWithValidation<String> {
-  const BoringTextField(
+class BoringIntField extends StatefulWidget
+    implements BoringFieldWithValidation<int> {
+  const BoringIntField(
       {Key? key,
       required this.jsonKey,
       required this.label,
@@ -25,18 +26,18 @@ class BoringTextField extends StatefulWidget
   @override
   final String? helperText;
   @override
-  final String? initialValue;
+  final int? initialValue;
   @override
   final String? Function(String?)? validator;
   final bool obscureText;
   final bool enableSuggestions;
   final bool autocorrect;
   @override
-  final BoringFieldController<String>? controller;
+  final BoringFieldController<int>? controller;
 
   @override
-  BoringTextField copyWithController() {
-    return BoringTextField(
+  BoringIntField copyWithController() {
+    return BoringIntField(
       jsonKey: jsonKey,
       label: label,
       helperText: helperText,
@@ -45,15 +46,15 @@ class BoringTextField extends StatefulWidget
       enableSuggestions: enableSuggestions,
       autocorrect: autocorrect,
       validator: validator,
-      controller: controller ?? BoringFieldController<String>(),
+      controller: controller ?? BoringFieldController<int>(),
     );
   }
 
   @override
-  State<BoringTextField> createState() => _BoringTextFieldState();
+  State<BoringIntField> createState() => _BoringIntFieldState();
 }
 
-class _BoringTextFieldState extends State<BoringTextField>
+class _BoringIntFieldState extends State<BoringIntField>
     implements BoringFieldState<String> {
   final textController = TextEditingController();
 
@@ -62,7 +63,9 @@ class _BoringTextFieldState extends State<BoringTextField>
     super.initState();
 
     widget.controller?.value = widget.initialValue;
-    textController.text = widget.controller?.value ?? '';
+    textController.text = widget.controller?.value != null
+        ? widget.controller!.value.toString()
+        : '';
 
     widget.controller?.addListener(() {
       if ((widget.controller?.shouldReset ?? false) &&
@@ -80,7 +83,9 @@ class _BoringTextFieldState extends State<BoringTextField>
       enableSuggestions: widget.enableSuggestions,
       autocorrect: widget.autocorrect,
       validator: widget.validator,
-      onChanged: (v) => widget.controller?.value = v,
+      keyboardType: TextInputType.number,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      onChanged: (v) => widget.controller?.value = int.tryParse(v),
       decoration: InputDecoration(
         label: Text(widget.label),
         helperText: widget.helperText,
@@ -93,7 +98,9 @@ class _BoringTextFieldState extends State<BoringTextField>
     widget.controller?.shouldReset = false;
     widget.controller?.isResetting = true;
     widget.controller?.value = widget.initialValue;
-    textController.text = widget.controller?.value ?? '';
+    textController.text = widget.controller?.value != null
+        ? widget.controller!.value.toString()
+        : '';
     widget.controller?.isResetting = false;
   }
 }

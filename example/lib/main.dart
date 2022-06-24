@@ -52,20 +52,34 @@ class _HomePageState extends State<HomePage> {
                         BoringSection(
                           title: 'Identity',
                           jsonKey: 'identity',
-                          fields: const [
+                          fields: [
                             BoringTextField(
                               jsonKey: 'name',
                               label: 'Name',
                               helperText: 'First name',
                               initialValue: 'Andrea',
+                              validator: (v) {
+                                if ((v?.length ?? 0) > 25) {
+                                  return 'Name should be less than 25 chars';
+                                } else {
+                                  return null;
+                                }
+                              },
                             ),
-                            BoringTextField(
+                            const BoringTextField(
                               jsonKey: 'surname',
                               label: 'Surname',
                             ),
                             BoringPasswordField(
                               jsonKey: 'password',
                               label: 'Password',
+                              validator: (v) {
+                                if ((v?.length ?? 0) > 25) {
+                                  return 'Password should be less than 25 chars';
+                                } else {
+                                  return null;
+                                }
+                              },
                             ),
                           ],
                         ),
@@ -78,9 +92,10 @@ class _HomePageState extends State<HomePage> {
                               label: 'city',
                               initialValue: 'Rome',
                             ),
-                            BoringTextField(
+                            BoringIntField(
                               jsonKey: 'cap',
                               label: 'cap',
+                              initialValue: 28060,
                               helperText: 'xxxxx',
                             ),
                           ],

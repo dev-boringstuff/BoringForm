@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BoringFormController extends ChangeNotifier {
-  Map<String, dynamic> receivedValue = {};
+  Map<String, dynamic>? receivedValue;
   bool isResetting = false;
   bool shouldReset = false;
   bool isGettingValue = false;
@@ -12,7 +12,7 @@ class BoringFormController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic> getValue() {
+  Map<String, dynamic>? getValue() {
     shouldGetValue = true;
     notifyListeners();
 

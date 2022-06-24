@@ -9,6 +9,7 @@ class BoringPasswordField extends BoringTextField {
     required String label,
     String? helperText,
     String? initialValue,
+    String? Function(String?)? validator,
     BoringFieldController<String>? controller,
   }) : super(
           key: key,
@@ -17,6 +18,7 @@ class BoringPasswordField extends BoringTextField {
           helperText: helperText,
           initialValue: initialValue,
           controller: controller,
+          validator: validator,
           obscureText: true,
           enableSuggestions: false,
           autocorrect: false,

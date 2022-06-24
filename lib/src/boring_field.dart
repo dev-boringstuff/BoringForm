@@ -15,7 +15,7 @@ abstract class BoringField<T> extends StatefulWidget {
   final String jsonKey;
   final String label;
   final String? helperText;
-  final BoringFieldController? controller;
+  final BoringFieldController<T>? controller;
 
   BoringField<T> copyWithController();
 }

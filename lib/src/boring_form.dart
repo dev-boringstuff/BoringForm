@@ -20,6 +20,8 @@ class BoringForm extends StatefulWidget {
 }
 
 class _BoringFormState extends State<BoringForm> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +41,8 @@ class _BoringFormState extends State<BoringForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: GlobalKey<FormState>(),
+      autovalidateMode: AutovalidateMode.always,
+      key: _formKey,
       child: Container(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -76,13 +79,16 @@ class _BoringFormState extends State<BoringForm> {
   void _getValue() {
     widget.controller.shouldGetValue = false;
     widget.controller.isGettingValue = true;
-    final newValue = <String, dynamic>{};
-    for (var section in widget.sections) {
-      if (section.jsonKey != null) {
-        newValue[section.jsonKey!] = section.getValue();
-      } else {
-        final sectionValue = section.getValue();
-        sectionValue.forEach((k, v) => newValue[k] = v);
+    Map<String, dynamic>? newValue;
+    if (_formKey.currentState?.validate() ?? false) {
+      newValue = {};
+      for (var section in widget.sections) {
+        if (section.jsonKey != null) {
+          newValue[section.jsonKey!] = section.getValue();
+        } else {
+          final sectionValue = section.getValue();
+          sectionValue.forEach((k, v) => newValue![k] = v);
+        }
       }
     }
     widget.controller.receivedValue = newValue;
