@@ -86,8 +86,8 @@ class _HomePageState extends State<HomePage> {
                         BoringSection(
                           title: 'Contacts',
                           jsonKey: 'contacts',
-                          fields: const [
-                            BoringTextField(
+                          fields: [
+                            const BoringTextField(
                               jsonKey: 'city',
                               label: 'city',
                               initialValue: 'Rome',
@@ -97,29 +97,13 @@ class _HomePageState extends State<HomePage> {
                               label: 'cap',
                               initialValue: 28060,
                               helperText: 'xxxxx',
-                            ),
-                          ],
-                        ),
-                        BoringSection(
-                          title: 'Buggy section 1',
-                          jsonKey: 'bug',
-                          fields: const [
-                            BoringTextField(
-                              jsonKey: 'bug1',
-                              label: 'bug1',
-                            ),
-                            BoringTextField(
-                              jsonKey: 'bug2',
-                              label: 'bug2',
-                            ),
-                          ],
-                        ),
-                        BoringSection(
-                          title: 'Buggy section 2',
-                          fields: const [
-                            BoringTextField(
-                              jsonKey: 'bug',
-                              label: 'bug',
+                              validator: (v) {
+                                if ((v?.length ?? 0) != 5) {
+                                  return 'cap should be long 5 chars';
+                                } else {
+                                  return null;
+                                }
+                              },
                             ),
                           ],
                         ),
@@ -161,6 +145,20 @@ class _HomePageState extends State<HomePage> {
                     form1Controller.reset();
                   },
                   child: const Text('Reset 1'),
+                ),
+                const SizedBox(height: 4),
+                ElevatedButton(
+                  onPressed: () {
+                    debugPrint(form1Controller.valid.toString());
+                  },
+                  child: const Text('Get valid 1'),
+                ),
+                const SizedBox(height: 4),
+                ElevatedButton(
+                  onPressed: () {
+                    form1Controller.validate();
+                  },
+                  child: const Text('Validate 1'),
                 ),
                 const SizedBox(height: 4),
                 ElevatedButton(

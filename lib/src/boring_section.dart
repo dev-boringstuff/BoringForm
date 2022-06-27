@@ -47,6 +47,26 @@ class BoringSection extends StatelessWidget {
     }
   }
 
+  void updateValid() {
+    for (var field in fields) {
+      field.controller?.getValid();
+    }
+  }
+
+  bool getValid() {
+    bool isValid = true;
+    for (var field in fields) {
+      isValid &= field.controller?.valid ?? false;
+    }
+    return isValid;
+  }
+
+  void validate() {
+    for (var field in fields) {
+      field.controller?.validate();
+    }
+  }
+
   Map<String, dynamic> getValue() {
     final valuesMap = <String, dynamic>{};
     for (var field in fields) {

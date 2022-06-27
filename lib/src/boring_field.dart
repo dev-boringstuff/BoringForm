@@ -22,4 +22,6 @@ abstract class BoringField<T> extends StatefulWidget {
 
 abstract class BoringFieldState<T> {
   void reset();
+  void updateValid();
+  void validate();
 }

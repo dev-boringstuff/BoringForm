@@ -57,12 +57,15 @@ class BoringIntField extends StatefulWidget
 class _BoringIntFieldState extends State<BoringIntField>
     implements BoringFieldState<String> {
   final textController = TextEditingController();
+  String? savedError;
+  String? errorText;
 
   @override
   void initState() {
     super.initState();
 
     widget.controller?.value = widget.initialValue;
+    updateValid();
     textController.text = widget.controller?.value != null
         ? widget.controller!.value.toString()
         : '';
@@ -71,6 +74,20 @@ class _BoringIntFieldState extends State<BoringIntField>
       if ((widget.controller?.shouldReset ?? false) &&
           !(widget.controller?.isResetting ?? false)) {
         reset();
+      }
+    });
+
+    widget.controller?.addListener(() {
+      if ((widget.controller?.shouldGetValid ?? false) &&
+          !(widget.controller?.isGettingValid ?? false)) {
+        updateValid();
+      }
+    });
+
+    widget.controller?.addListener(() {
+      if ((widget.controller?.shouldValidate ?? false) &&
+          !(widget.controller?.isValidating ?? false)) {
+        validate();
       }
     });
   }
@@ -85,10 +102,14 @@ class _BoringIntFieldState extends State<BoringIntField>
       validator: widget.validator,
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      onChanged: (v) => widget.controller?.value = int.tryParse(v),
+      onChanged: (v) {
+        widget.controller?.value = int.tryParse(v);
+        updateValid();
+      },
       decoration: InputDecoration(
         label: Text(widget.label),
         helperText: widget.helperText,
+        errorText: errorText,
       ),
     );
   }
@@ -98,9 +119,24 @@ class _BoringIntFieldState extends State<BoringIntField>
     widget.controller?.shouldReset = false;
     widget.controller?.isResetting = true;
     widget.controller?.value = widget.initialValue;
+    updateValid();
     textController.text = widget.controller?.value != null
         ? widget.controller!.value.toString()
         : '';
     widget.controller?.isResetting = false;
+  }
+
+  @override
+  void updateValid() {
+    savedError = widget.validator?.call(widget.controller?.value.toString());
+    widget.controller?.valid = savedError == null;
+  }
+
+  @override
+  void validate() {
+    updateValid();
+    setState(() {
+      errorText = savedError;
+    });
   }
 }
