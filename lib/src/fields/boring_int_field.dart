@@ -103,6 +103,9 @@ class _BoringIntFieldState extends State<BoringIntField>
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       onChanged: (v) {
+        setState(() {
+          errorText = null;
+        });
         widget.controller?.value = int.tryParse(v);
         updateValid();
       },
@@ -116,6 +119,9 @@ class _BoringIntFieldState extends State<BoringIntField>
 
   @override
   void reset() {
+    setState(() {
+      errorText = null;
+    });
     widget.controller?.shouldReset = false;
     widget.controller?.isResetting = true;
     widget.controller?.value = widget.initialValue;
@@ -134,9 +140,11 @@ class _BoringIntFieldState extends State<BoringIntField>
 
   @override
   void validate() {
-    updateValid();
+    widget.controller?.shouldValidate = false;
+    widget.controller?.isValidating = true;
     setState(() {
       errorText = savedError;
     });
+    widget.controller?.isValidating = false;
   }
 }

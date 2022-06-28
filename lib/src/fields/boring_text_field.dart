@@ -97,6 +97,9 @@ class _BoringTextFieldState extends State<BoringTextField>
       enableSuggestions: widget.enableSuggestions,
       autocorrect: widget.autocorrect,
       onChanged: (v) {
+        setState(() {
+          errorText = null;
+        });
         widget.controller?.value = v;
         updateValid();
       },
@@ -110,6 +113,9 @@ class _BoringTextFieldState extends State<BoringTextField>
 
   @override
   void reset() {
+    setState(() {
+      errorText = null;
+    });
     widget.controller?.shouldReset = false;
     widget.controller?.isResetting = true;
     widget.controller?.value = widget.initialValue;
@@ -126,9 +132,11 @@ class _BoringTextFieldState extends State<BoringTextField>
 
   @override
   void validate() {
-    updateValid();
+    widget.controller?.shouldValidate = false;
+    widget.controller?.isValidating = true;
     setState(() {
       errorText = savedError;
     });
+    widget.controller?.isValidating = false;
   }
 }

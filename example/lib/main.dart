@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                             BoringIntField(
                               jsonKey: 'cap',
                               label: 'cap',
-                              initialValue: 28060,
+                              initialValue: 2806,
                               helperText: 'xxxxx',
                               validator: (v) {
                                 if ((v?.length ?? 0) != 5) {
