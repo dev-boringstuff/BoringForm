@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 
 class BoringForm extends StatefulWidget {
   BoringForm({
-    Key? key,
+    super.key,
     required this.controller,
-    required this.sections,
+    required List<BoringSection> sections,
     this.title,
     this.subtitle,
-  }) : super(key: key) {
+  }) : sections = sections.map((section) {
+          final newSection = section.copyWithController();
+          return newSection;
+        }).toList() {
     var jsonkeysAreValid = true;
     List<String> usedKeys = [];
     for (var section in sections) {
@@ -94,7 +97,7 @@ class _BoringFormState extends State<BoringForm> {
     widget.controller.shouldReset = false;
     widget.controller.isResetting = true;
     for (var section in widget.sections) {
-      section.reset();
+      section.controller?.reset();
     }
     widget.controller.isResetting = false;
   }
@@ -104,8 +107,8 @@ class _BoringFormState extends State<BoringForm> {
     widget.controller.isGettingValue = true;
     bool isValid = true;
     for (var section in widget.sections) {
-      section.updateValid();
-      isValid &= section.getValid();
+      section.controller?.updateValid();
+      isValid &= section.controller?.valid ?? false;
     }
     widget.controller.receivedValid = isValid;
     widget.controller.isGettingValue = false;
@@ -115,7 +118,7 @@ class _BoringFormState extends State<BoringForm> {
     widget.controller.shouldValidate = false;
     widget.controller.isValidating = true;
     for (var section in widget.sections) {
-      section.validate();
+      section.controller?.validate();
     }
     widget.controller.isValidating = false;
   }
@@ -125,10 +128,11 @@ class _BoringFormState extends State<BoringForm> {
     widget.controller.isGettingValue = true;
     final newValue = <String, dynamic>{};
     for (var section in widget.sections) {
+      section.controller?.getValue();
       if (section.jsonKey != null) {
-        newValue[section.jsonKey!] = section.getValue();
+        newValue[section.jsonKey!] = section.controller?.value ?? {};
       } else {
-        final sectionValue = section.getValue();
+        final sectionValue = section.controller?.value ?? {};
         sectionValue.forEach((k, v) => newValue[k] = v);
       }
     }

@@ -5,15 +5,19 @@ import 'package:flutter/material.dart';
 
 class BoringPasswordField extends StatefulWidget
     implements BoringFieldWithValidation<String> {
-  const BoringPasswordField(
-      {Key? key,
-      required this.jsonKey,
-      required this.label,
-      this.helperText,
-      this.initialValue,
-      this.controller,
-      this.validator})
-      : super(key: key);
+  const BoringPasswordField({
+    Key? key,
+    required this.jsonKey,
+    required this.label,
+    this.helperText,
+    this.initialValue,
+    this.controller,
+    this.validator,
+    this.xs = 12,
+    this.sm = 12,
+    this.md = 12,
+    this.lg = 12,
+  }) : super(key: key);
 
   @override
   final String jsonKey;
@@ -27,6 +31,14 @@ class BoringPasswordField extends StatefulWidget
   final String? Function(String?)? validator;
   @override
   final BoringFieldController<String>? controller;
+  @override
+  final int xs;
+  @override
+  final int sm;
+  @override
+  final int md;
+  @override
+  final int lg;
 
   @override
   BoringPasswordField copyWithController() {
@@ -37,6 +49,10 @@ class BoringPasswordField extends StatefulWidget
       initialValue: initialValue,
       validator: validator,
       controller: controller ?? BoringFieldController<String>(),
+      xs: xs,
+      sm: sm,
+      md: md,
+      lg: lg,
     );
   }
 

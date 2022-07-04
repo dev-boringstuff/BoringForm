@@ -11,6 +11,10 @@ abstract class BoringFieldWithValidation<T> extends BoringField<T> {
     T? initialValue,
     BoringFieldController<T>? controller,
     this.validator,
+    required xs,
+    required sm,
+    required md,
+    required lg,
   }) : super(
           jsonKey: jsonKey,
           label: label,
@@ -18,6 +22,10 @@ abstract class BoringFieldWithValidation<T> extends BoringField<T> {
           initialValue: initialValue,
           controller: controller,
           key: key,
+          xs: xs,
+          sm: sm,
+          md: md,
+          lg: lg,
         );
 
   final String? Function(String?)? validator;

@@ -54,6 +54,8 @@ class _HomePageState extends State<HomePage> {
                           jsonKey: 'identity',
                           fields: [
                             BoringTextField(
+                              lg: 4,
+                              md: 6,
                               jsonKey: 'name',
                               label: 'Name',
                               helperText: 'First name',
@@ -67,10 +69,14 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),
                             const BoringTextField(
+                              lg: 4,
+                              md: 6,
                               jsonKey: 'surname',
                               label: 'Surname',
                             ),
                             BoringPasswordField(
+                              lg: 4,
+                              md: 6,
                               jsonKey: 'password',
                               label: 'Password',
                               validator: (v) {
@@ -80,6 +86,24 @@ class _HomePageState extends State<HomePage> {
                                   return null;
                                 }
                               },
+                            ),
+                            const BoringTextField(
+                              lg: 4,
+                              md: 6,
+                              jsonKey: 'key1',
+                              label: 'label1',
+                            ),
+                            const BoringTextField(
+                              lg: 4,
+                              md: 6,
+                              jsonKey: 'key2',
+                              label: 'label2',
+                            ),
+                            const BoringTextField(
+                              lg: 4,
+                              md: 6,
+                              jsonKey: 'key3',
+                              label: 'label3',
                             ),
                           ],
                         ),

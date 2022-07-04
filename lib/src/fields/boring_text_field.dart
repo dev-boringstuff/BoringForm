@@ -5,18 +5,22 @@ import 'package:flutter/material.dart';
 
 class BoringTextField extends StatefulWidget
     implements BoringFieldWithValidation<String> {
-  const BoringTextField(
-      {Key? key,
-      required this.jsonKey,
-      required this.label,
-      this.helperText,
-      this.initialValue,
-      this.controller,
-      this.obscureText = false,
-      this.enableSuggestions = true,
-      this.autocorrect = true,
-      this.validator})
-      : super(key: key);
+  const BoringTextField({
+    Key? key,
+    required this.jsonKey,
+    required this.label,
+    this.helperText,
+    this.initialValue,
+    this.controller,
+    this.obscureText = false,
+    this.enableSuggestions = true,
+    this.autocorrect = true,
+    this.validator,
+    this.xs = 12,
+    this.sm = 12,
+    this.md = 12,
+    this.lg = 12,
+  }) : super(key: key);
 
   @override
   final String jsonKey;
@@ -33,6 +37,14 @@ class BoringTextField extends StatefulWidget
   final bool autocorrect;
   @override
   final BoringFieldController<String>? controller;
+  @override
+  final int xs;
+  @override
+  final int sm;
+  @override
+  final int md;
+  @override
+  final int lg;
 
   @override
   BoringTextField copyWithController() {
@@ -46,6 +58,10 @@ class BoringTextField extends StatefulWidget
       autocorrect: autocorrect,
       validator: validator,
       controller: controller ?? BoringFieldController<String>(),
+      xs: xs,
+      sm: sm,
+      md: md,
+      lg: lg,
     );
   }
 
