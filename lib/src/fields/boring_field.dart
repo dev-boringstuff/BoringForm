@@ -1,4 +1,4 @@
-import 'package:boring_form_builder/src/boring_field_controller.dart';
+import 'package:boring_form_builder/src/fields/boring_field_controller.dart';
 import 'package:flutter/material.dart';
 
 abstract class BoringField<T> extends StatefulWidget {
@@ -30,6 +30,9 @@ abstract class BoringField<T> extends StatefulWidget {
 
 abstract class BoringFieldState<T> {
   void reset();
+}
+
+abstract class BoringFieldStateWithValidation<T> extends BoringFieldState<T> {
   void updateValid();
   void validate();
 }

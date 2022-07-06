@@ -1,6 +1,6 @@
-import 'package:boring_form_builder/src/boring_field.dart';
-import 'package:boring_form_builder/src/boring_field_controller.dart';
-import 'package:boring_form_builder/src/boring_field_with_validation.dart';
+import 'package:boring_form_builder/src/fields/boring_field.dart';
+import 'package:boring_form_builder/src/fields/boring_field_controller.dart';
+import 'package:boring_form_builder/src/fields/boring_field_with_validation.dart';
 import 'package:flutter/material.dart';
 
 class BoringTextField extends StatefulWidget
@@ -70,7 +70,7 @@ class BoringTextField extends StatefulWidget
 }
 
 class _BoringTextFieldState extends State<BoringTextField>
-    implements BoringFieldState<String> {
+    implements BoringFieldStateWithValidation<String> {
   final textController = TextEditingController();
   String? savedError;
   String? errorText;

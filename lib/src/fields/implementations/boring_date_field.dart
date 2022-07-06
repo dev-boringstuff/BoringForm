@@ -1,22 +1,24 @@
-import 'package:boring_form_builder/src/boring_field.dart';
-import 'package:boring_form_builder/src/boring_field_controller.dart';
-import 'package:boring_form_builder/src/boring_field_with_validation.dart';
+import 'package:boring_form_builder/src/fields/boring_field.dart';
+import 'package:boring_form_builder/src/fields/boring_field_controller.dart';
+import 'package:boring_form_builder/src/fields/boring_field_with_validation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
-class BoringIntField extends StatefulWidget
-    implements BoringFieldWithValidation<int> {
-  const BoringIntField({
+class BoringDateField extends StatefulWidget
+    implements BoringFieldWithValidation<DateTime> {
+  const BoringDateField({
     Key? key,
     required this.jsonKey,
     required this.label,
     this.helperText,
     this.initialValue,
     this.controller,
-    this.obscureText = false,
-    this.enableSuggestions = true,
-    this.autocorrect = true,
     this.validator,
+    this.dateFormat = 'MM/dd/yyyy',
+    this.locale = const Locale('en'),
+    required this.initialDate,
+    required this.firstDate,
+    required this.lastDate,
     this.xs = 12,
     this.sm = 12,
     this.md = 12,
@@ -30,14 +32,11 @@ class BoringIntField extends StatefulWidget
   @override
   final String? helperText;
   @override
-  final int? initialValue;
+  final DateTime? initialValue;
   @override
-  final String? Function(String?)? validator;
-  final bool obscureText;
-  final bool enableSuggestions;
-  final bool autocorrect;
+  final String? Function(DateTime?)? validator;
   @override
-  final BoringFieldController<int>? controller;
+  final BoringFieldController<DateTime>? controller;
   @override
   final int xs;
   @override
@@ -46,32 +45,39 @@ class BoringIntField extends StatefulWidget
   final int md;
   @override
   final int lg;
+  final String dateFormat;
+  final Locale locale;
+  final DateTime initialDate;
+  final DateTime firstDate;
+  final DateTime lastDate;
 
   @override
-  BoringIntField copyWithController() {
-    return BoringIntField(
+  BoringDateField copyWithController() {
+    return BoringDateField(
       jsonKey: jsonKey,
       label: label,
       helperText: helperText,
       initialValue: initialValue,
-      obscureText: obscureText,
-      enableSuggestions: enableSuggestions,
-      autocorrect: autocorrect,
       validator: validator,
-      controller: controller ?? BoringFieldController<int>(),
+      controller: controller ?? BoringFieldController<DateTime>(),
       xs: xs,
       sm: sm,
       md: md,
       lg: lg,
+      dateFormat: dateFormat,
+      locale: locale,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
     );
   }
 
   @override
-  State<BoringIntField> createState() => _BoringIntFieldState();
+  State<BoringDateField> createState() => _BoringDateFieldState();
 }
 
-class _BoringIntFieldState extends State<BoringIntField>
-    implements BoringFieldState<String> {
+class _BoringDateFieldState extends State<BoringDateField>
+    implements BoringFieldStateWithValidation<String> {
   final textController = TextEditingController();
   String? savedError;
   String? errorText;
@@ -83,7 +89,7 @@ class _BoringIntFieldState extends State<BoringIntField>
     widget.controller?.value = widget.initialValue;
     updateValid();
     textController.text = widget.controller?.value != null
-        ? widget.controller!.value.toString()
+        ? DateFormat(widget.dateFormat).format(widget.controller!.value!)
         : '';
 
     widget.controller?.addListener(() {
@@ -110,26 +116,37 @@ class _BoringIntFieldState extends State<BoringIntField>
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextField(
+      mouseCursor: SystemMouseCursors.click,
       controller: textController,
-      obscureText: widget.obscureText,
-      enableSuggestions: widget.enableSuggestions,
-      autocorrect: widget.autocorrect,
-      validator: widget.validator,
-      keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      onChanged: (v) {
-        setState(() {
-          errorText = null;
-        });
-        widget.controller?.value = int.tryParse(v);
-        updateValid();
-      },
+      readOnly: true,
       decoration: InputDecoration(
+        icon: const Icon(Icons.calendar_today),
         label: Text(widget.label),
         helperText: widget.helperText,
         errorText: errorText,
       ),
+      onTap: () async {
+        DateTime? pickedDate = await showDatePicker(
+          context: context,
+          fieldHintText: widget.dateFormat,
+          locale: widget.locale,
+          initialDate: widget.initialDate,
+          firstDate: widget.firstDate,
+          lastDate: widget.lastDate,
+        );
+
+        if (pickedDate != null) {
+          String formattedDate =
+              DateFormat(widget.dateFormat).format(pickedDate);
+          setState(() {
+            errorText = null;
+          });
+          widget.controller?.value = pickedDate;
+          updateValid();
+          textController.text = formattedDate;
+        }
+      },
     );
   }
 
@@ -143,14 +160,14 @@ class _BoringIntFieldState extends State<BoringIntField>
     widget.controller?.value = widget.initialValue;
     updateValid();
     textController.text = widget.controller?.value != null
-        ? widget.controller!.value.toString()
+        ? DateFormat(widget.dateFormat).format(widget.controller!.value!)
         : '';
     widget.controller?.isResetting = false;
   }
 
   @override
   void updateValid() {
-    savedError = widget.validator?.call(widget.controller?.value.toString());
+    savedError = widget.validator?.call(widget.controller?.value);
     widget.controller?.valid = savedError == null;
   }
 

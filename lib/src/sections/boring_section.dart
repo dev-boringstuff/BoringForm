@@ -1,5 +1,5 @@
-import 'package:boring_form_builder/src/boring_field.dart';
-import 'package:boring_form_builder/src/boring_section_controller.dart';
+import 'package:boring_form_builder/src/fields/boring_field.dart';
+import 'package:boring_form_builder/src/sections/boring_section_controller.dart';
 import 'package:flutter/material.dart';
 
 class BoringSection extends StatefulWidget {

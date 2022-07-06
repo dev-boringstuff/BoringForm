@@ -1,5 +1,6 @@
 import 'package:boring_form_builder/boring_form_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,6 +16,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+      ],
       home: const HomePage(),
     );
   }
@@ -87,11 +96,17 @@ class _HomePageState extends State<HomePage> {
                                 }
                               },
                             ),
-                            const BoringTextField(
+                            BoringDateField(
                               lg: 4,
                               md: 6,
                               jsonKey: 'key1',
                               label: 'label1',
+                              initialValue: DateTime.now(),
+                              locale: const Locale('it'),
+                              dateFormat: 'dd/MM/yyyy',
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
                             ),
                             const BoringTextField(
                               lg: 4,
@@ -104,6 +119,10 @@ class _HomePageState extends State<HomePage> {
                               md: 6,
                               jsonKey: 'key3',
                               label: 'label3',
+                            ),
+                            const BoringCheckbox(
+                              jsonKey: 'key4',
+                              label: 'label4',
                             ),
                           ],
                         ),
@@ -122,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                               initialValue: 2806,
                               helperText: 'xxxxx',
                               validator: (v) {
-                                if ((v?.length ?? 0) != 5) {
+                                if ((v?.toString().length ?? 0) != 5) {
                                   return 'cap should be long 5 chars';
                                 } else {
                                   return null;
