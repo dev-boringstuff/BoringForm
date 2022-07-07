@@ -9,3 +9,4 @@ export 'src/fields/implementations/boring_password_field.dart';
 export 'src/fields/implementations/boring_int_field.dart';
 export 'src/fields/implementations/boring_date_field.dart';
 export 'src/fields/implementations/boring_checkbox.dart';
+export 'src/fields/implementations/boring_dropdown.dart';

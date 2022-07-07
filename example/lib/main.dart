@@ -114,11 +114,26 @@ class _HomePageState extends State<HomePage> {
                               jsonKey: 'key2',
                               label: 'label2',
                             ),
-                            const BoringTextField(
+                            const BoringDropdown(
                               lg: 4,
                               md: 6,
-                              jsonKey: 'key3',
-                              label: 'label3',
+                              jsonKey: 'dropdown',
+                              label: 'dropdown',
+                              required: 'Required',
+                              items: <DropdownMenuItem<String>>[
+                                DropdownMenuItem<String>(
+                                  value: 'One',
+                                  child: Text('One'),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Two',
+                                  child: Text('Two'),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Free',
+                                  child: Text('Free'),
+                                ),
+                              ],
                             ),
                             const BoringCheckbox(
                               jsonKey: 'key4',

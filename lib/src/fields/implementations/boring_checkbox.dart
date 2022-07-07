@@ -61,6 +61,7 @@ class _BoringCheckboxState extends State<BoringCheckbox>
     super.initState();
 
     widget.controller?.value = widget.initialValue ?? false;
+    widget.controller?.valid = true;
 
     widget.controller?.addListener(() {
       if ((widget.controller?.shouldReset ?? false) &&
