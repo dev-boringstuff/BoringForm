@@ -2,11 +2,10 @@ import 'package:boring_form_builder/src/fields/boring_field.dart';
 import 'package:boring_form_builder/src/fields/boring_field_controller.dart';
 import 'package:boring_form_builder/src/fields/boring_field_with_validation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class BoringIntField extends StatefulWidget
-    implements BoringFieldWithValidation<int> {
-  const BoringIntField({
+class BoringDoubleField extends StatefulWidget
+    implements BoringFieldWithValidation<double> {
+  const BoringDoubleField({
     Key? key,
     required this.jsonKey,
     required this.label,
@@ -27,11 +26,11 @@ class BoringIntField extends StatefulWidget
   @override
   final String? helperText;
   @override
-  final int? initialValue;
+  final double? initialValue;
   @override
-  final String? Function(int?)? validator;
+  final String? Function(double?)? validator;
   @override
-  final BoringFieldController<int>? controller;
+  final BoringFieldController<double>? controller;
   @override
   final int xs;
   @override
@@ -42,14 +41,14 @@ class BoringIntField extends StatefulWidget
   final int lg;
 
   @override
-  BoringIntField copyWithController() {
-    return BoringIntField(
+  BoringDoubleField copyWithController() {
+    return BoringDoubleField(
       jsonKey: jsonKey,
       label: label,
       helperText: helperText,
       initialValue: initialValue,
       validator: validator,
-      controller: controller ?? BoringFieldController<int>(),
+      controller: controller ?? BoringFieldController<double>(),
       xs: xs,
       sm: sm,
       md: md,
@@ -58,10 +57,10 @@ class BoringIntField extends StatefulWidget
   }
 
   @override
-  State<BoringIntField> createState() => _BoringIntFieldState();
+  State<BoringDoubleField> createState() => _BoringDoubleFieldState();
 }
 
-class _BoringIntFieldState extends State<BoringIntField>
+class _BoringDoubleFieldState extends State<BoringDoubleField>
     implements BoringFieldStateWithValidation<String> {
   final textController = TextEditingController();
   String? savedError;
@@ -106,12 +105,11 @@ class _BoringIntFieldState extends State<BoringIntField>
       enableSuggestions: false,
       autocorrect: false,
       keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       onChanged: (v) {
         setState(() {
           errorText = null;
         });
-        widget.controller?.value = int.tryParse(v);
+        widget.controller?.value = double.tryParse(v);
         updateValid();
       },
       decoration: InputDecoration(
