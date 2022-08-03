@@ -11,7 +11,7 @@ class BoringSection extends StatefulWidget {
     this.jsonKey,
     this.controller,
   }) : fields = fields.map((field) {
-          final newField = field.copyWithController();
+          final newField = field.copyWith();
           return newField;
         }).toList();
 
@@ -21,7 +21,7 @@ class BoringSection extends StatefulWidget {
   final List<BoringField> fields;
   final BoringSectionController? controller;
 
-  BoringSection copyWithController() {
+  BoringSection copyWith() {
     return BoringSection(
       jsonKey: jsonKey,
       title: title,

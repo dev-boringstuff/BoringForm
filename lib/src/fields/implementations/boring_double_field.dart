@@ -13,6 +13,7 @@ class BoringDoubleField extends StatefulWidget
     this.initialValue,
     this.controller,
     this.validator,
+    this.onChanged,
     this.xs = 12,
     this.sm = 12,
     this.md = 12,
@@ -32,6 +33,8 @@ class BoringDoubleField extends StatefulWidget
   @override
   final BoringFieldController<double>? controller;
   @override
+  final void Function(double?)? onChanged;
+  @override
   final int xs;
   @override
   final int sm;
@@ -41,7 +44,7 @@ class BoringDoubleField extends StatefulWidget
   final int lg;
 
   @override
-  BoringDoubleField copyWithController() {
+  BoringDoubleField copyWith() {
     return BoringDoubleField(
       jsonKey: jsonKey,
       label: label,
@@ -49,6 +52,7 @@ class BoringDoubleField extends StatefulWidget
       initialValue: initialValue,
       validator: validator,
       controller: controller ?? BoringFieldController<double>(),
+      onChanged: onChanged,
       xs: xs,
       sm: sm,
       md: md,
@@ -111,6 +115,7 @@ class _BoringDoubleFieldState extends State<BoringDoubleField>
         });
         widget.controller?.value = double.tryParse(v);
         updateValid();
+        widget.onChanged?.call(double.tryParse(v));
       },
       decoration: InputDecoration(
         label: Text(widget.label),

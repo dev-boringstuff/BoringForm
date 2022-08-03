@@ -12,6 +12,7 @@ class BoringTextField extends StatefulWidget
     this.helperText,
     this.initialValue,
     this.controller,
+    this.onChanged,
     this.obscureText = false,
     this.enableSuggestions = true,
     this.autocorrect = true,
@@ -38,6 +39,8 @@ class BoringTextField extends StatefulWidget
   @override
   final BoringFieldController<String>? controller;
   @override
+  final void Function(String)? onChanged;
+  @override
   final int xs;
   @override
   final int sm;
@@ -47,12 +50,16 @@ class BoringTextField extends StatefulWidget
   final int lg;
 
   @override
-  BoringTextField copyWithController() {
+  BoringTextField copyWith({void Function()? onChangedAux}) {
     return BoringTextField(
       jsonKey: jsonKey,
       label: label,
       helperText: helperText,
       initialValue: initialValue,
+      onChanged: (value) {
+        onChangedAux?.call();
+        onChanged?.call(value);
+      },
       obscureText: obscureText,
       enableSuggestions: enableSuggestions,
       autocorrect: autocorrect,
@@ -118,6 +125,7 @@ class _BoringTextFieldState extends State<BoringTextField>
         });
         widget.controller?.value = v;
         updateValid();
+        widget.onChanged?.call(v);
       },
       decoration: InputDecoration(
         label: Text(widget.label),
@@ -154,5 +162,9 @@ class _BoringTextFieldState extends State<BoringTextField>
       errorText = savedError;
     });
     widget.controller?.isValidating = false;
+  }
+
+  onChangedAux(String value) {
+    widget.onChanged?.call(value);
   }
 }

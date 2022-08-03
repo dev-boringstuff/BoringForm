@@ -163,6 +163,27 @@ class _HomePageState extends State<HomePage> {
                                 }
                               },
                             ),
+                            BoringArrayField(
+                              jsonKey: 'array',
+                              label: 'Array field',
+                              fields: [
+                                const BoringIntField(
+                                    jsonKey: 'int', label: 'int'),
+                                BoringPasswordField(
+                                  lg: 4,
+                                  md: 6,
+                                  jsonKey: 'password',
+                                  label: 'Password',
+                                  validator: (v) {
+                                    if ((v?.length ?? 0) > 25) {
+                                      return 'Password should be less than 25 chars';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ],

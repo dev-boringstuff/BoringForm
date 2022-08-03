@@ -13,6 +13,7 @@ class BoringPasswordField extends StatefulWidget
     this.initialValue,
     this.controller,
     this.validator,
+    this.onChanged,
     this.xs = 12,
     this.sm = 12,
     this.md = 12,
@@ -32,6 +33,8 @@ class BoringPasswordField extends StatefulWidget
   @override
   final BoringFieldController<String>? controller;
   @override
+  final void Function(String)? onChanged;
+  @override
   final int xs;
   @override
   final int sm;
@@ -41,7 +44,7 @@ class BoringPasswordField extends StatefulWidget
   final int lg;
 
   @override
-  BoringPasswordField copyWithController() {
+  BoringPasswordField copyWith() {
     return BoringPasswordField(
       jsonKey: jsonKey,
       label: label,
@@ -49,6 +52,7 @@ class BoringPasswordField extends StatefulWidget
       initialValue: initialValue,
       validator: validator,
       controller: controller ?? BoringFieldController<String>(),
+      onChanged: onChanged,
       xs: xs,
       sm: sm,
       md: md,
@@ -112,6 +116,7 @@ class _BoringPasswordFieldState extends State<BoringPasswordField>
             });
             widget.controller?.value = v;
             updateValid();
+            widget.onChanged?.call(v);
           },
           decoration: InputDecoration(
             label: Text(widget.label),

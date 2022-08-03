@@ -19,6 +19,7 @@ class BoringDateField extends StatefulWidget
     required this.initialDate,
     required this.firstDate,
     required this.lastDate,
+    this.onChanged,
     this.xs = 12,
     this.sm = 12,
     this.md = 12,
@@ -38,6 +39,8 @@ class BoringDateField extends StatefulWidget
   @override
   final BoringFieldController<DateTime>? controller;
   @override
+  final void Function(DateTime?)? onChanged;
+  @override
   final int xs;
   @override
   final int sm;
@@ -52,7 +55,7 @@ class BoringDateField extends StatefulWidget
   final DateTime lastDate;
 
   @override
-  BoringDateField copyWithController() {
+  BoringDateField copyWith() {
     return BoringDateField(
       jsonKey: jsonKey,
       label: label,
@@ -60,6 +63,7 @@ class BoringDateField extends StatefulWidget
       initialValue: initialValue,
       validator: validator,
       controller: controller ?? BoringFieldController<DateTime>(),
+      onChanged: onChanged,
       xs: xs,
       sm: sm,
       md: md,
@@ -145,6 +149,7 @@ class _BoringDateFieldState extends State<BoringDateField>
           widget.controller?.value = pickedDate;
           updateValid();
           textController.text = formattedDate;
+          widget.onChanged?.call(pickedDate);
         }
       },
     );

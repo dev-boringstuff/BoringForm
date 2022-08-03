@@ -1,5 +1,4 @@
 import 'package:boring_form_builder/boring_form_builder.dart';
-import 'package:boring_form_builder/src/fields/boring_field.dart';
 import 'package:flutter/material.dart';
 
 class BoringCheckbox extends StatefulWidget implements BoringField<bool> {
@@ -10,6 +9,7 @@ class BoringCheckbox extends StatefulWidget implements BoringField<bool> {
     this.helperText,
     this.initialValue,
     this.controller,
+    this.onChanged,
     this.xs = 12,
     this.sm = 12,
     this.md = 12,
@@ -27,6 +27,8 @@ class BoringCheckbox extends StatefulWidget implements BoringField<bool> {
   @override
   final BoringFieldController<bool>? controller;
   @override
+  final void Function(bool?)? onChanged;
+  @override
   final int xs;
   @override
   final int sm;
@@ -36,13 +38,14 @@ class BoringCheckbox extends StatefulWidget implements BoringField<bool> {
   final int lg;
 
   @override
-  BoringCheckbox copyWithController() {
+  BoringCheckbox copyWith() {
     return BoringCheckbox(
       jsonKey: jsonKey,
       label: label,
       helperText: helperText,
       initialValue: initialValue,
       controller: controller ?? BoringFieldController<bool>(),
+      onChanged: onChanged,
       xs: xs,
       sm: sm,
       md: md,
@@ -82,6 +85,7 @@ class _BoringCheckboxState extends State<BoringCheckbox>
         setState(() {
           widget.controller?.value = newValue;
         });
+        widget.onChanged?.call(newValue);
       },
     );
   }

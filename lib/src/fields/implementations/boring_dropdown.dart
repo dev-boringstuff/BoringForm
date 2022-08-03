@@ -1,5 +1,4 @@
 import 'package:boring_form_builder/boring_form_builder.dart';
-import 'package:boring_form_builder/src/fields/boring_field.dart';
 import 'package:boring_form_builder/src/fields/boring_field_required.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +13,7 @@ class BoringDropdown<T> extends StatefulWidget
     this.controller,
     this.required,
     required this.items,
+    this.onChanged,
     this.xs = 12,
     this.sm = 12,
     this.md = 12,
@@ -33,6 +33,8 @@ class BoringDropdown<T> extends StatefulWidget
   @override
   final String? required;
   @override
+  final void Function(T?)? onChanged;
+  @override
   final int xs;
   @override
   final int sm;
@@ -43,7 +45,7 @@ class BoringDropdown<T> extends StatefulWidget
   final List<DropdownMenuItem<T>> items;
 
   @override
-  BoringDropdown<T> copyWithController() {
+  BoringDropdown<T> copyWith() {
     return BoringDropdown<T>(
       jsonKey: jsonKey,
       label: label,
@@ -52,6 +54,7 @@ class BoringDropdown<T> extends StatefulWidget
       controller: controller ?? BoringFieldController<T>(),
       required: required,
       items: items,
+      onChanged: onChanged,
       xs: xs,
       sm: sm,
       md: md,
@@ -114,6 +117,7 @@ class _BoringDropdownState<T> extends State<BoringDropdown<T>>
             widget.controller?.value = newValue;
           });
           updateValid();
+          widget.onChanged?.call(newValue);
         },
         items: widget.items,
       ),

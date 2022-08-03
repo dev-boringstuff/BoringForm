@@ -9,7 +9,7 @@ class BoringForm extends StatefulWidget {
     this.title,
     this.subtitle,
   }) : sections = sections.map((section) {
-          final newSection = section.copyWithController();
+          final newSection = section.copyWith();
           return newSection;
         }).toList() {
     var jsonkeysAreValid = true;

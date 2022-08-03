@@ -9,6 +9,7 @@ abstract class BoringField<T> extends StatefulWidget {
     this.helperText,
     this.initialValue,
     this.controller,
+    this.onChanged,
     required this.xs,
     required this.sm,
     required this.md,
@@ -20,12 +21,13 @@ abstract class BoringField<T> extends StatefulWidget {
   final String label;
   final String? helperText;
   final BoringFieldController<T>? controller;
+  final void Function(T)? onChanged;
   final int xs;
   final int sm;
   final int md;
   final int lg;
 
-  BoringField<T> copyWithController();
+  BoringField<T> copyWith();
 }
 
 abstract class BoringFieldState<T> {
