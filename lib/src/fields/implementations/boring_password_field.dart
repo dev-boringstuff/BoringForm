@@ -44,7 +44,7 @@ class BoringPasswordField extends StatefulWidget
   final int lg;
 
   @override
-  BoringPasswordField copyWith() {
+  BoringPasswordField copyWith({Function()? onChangedAux}) {
     return BoringPasswordField(
       jsonKey: jsonKey,
       label: label,
@@ -52,7 +52,10 @@ class BoringPasswordField extends StatefulWidget
       initialValue: initialValue,
       validator: validator,
       controller: controller ?? BoringFieldController<String>(),
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChangedAux?.call();
+        onChanged?.call(value);
+      },
       xs: xs,
       sm: sm,
       md: md,
@@ -75,7 +78,7 @@ class _BoringPasswordFieldState extends State<BoringPasswordField>
   void initState() {
     super.initState();
 
-    widget.controller?.value = widget.initialValue;
+    widget.controller?.setValue(widget.initialValue);
     updateValid();
     textController.text = widget.controller?.value ?? '';
 
@@ -114,7 +117,7 @@ class _BoringPasswordFieldState extends State<BoringPasswordField>
             setState(() {
               errorText = null;
             });
-            widget.controller?.value = v;
+            widget.controller?.setValue(v);
             updateValid();
             widget.onChanged?.call(v);
           },
@@ -153,7 +156,7 @@ class _BoringPasswordFieldState extends State<BoringPasswordField>
     });
     widget.controller?.shouldReset = false;
     widget.controller?.isResetting = true;
-    widget.controller?.value = widget.initialValue;
+    widget.controller?.setValue(widget.initialValue);
     updateValid();
     textController.text = widget.controller?.value ?? '';
     widget.controller?.isResetting = false;
@@ -173,5 +176,10 @@ class _BoringPasswordFieldState extends State<BoringPasswordField>
       errorText = savedError;
     });
     widget.controller?.isValidating = false;
+  }
+
+  @override
+  void setValue() {
+    // TODO: implement setValue
   }
 }

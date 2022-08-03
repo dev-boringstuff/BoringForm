@@ -86,7 +86,7 @@ class _BoringTextFieldState extends State<BoringTextField>
   void initState() {
     super.initState();
 
-    widget.controller?.value = widget.initialValue;
+    widget.controller?.setValue(widget.initialValue);
     updateValid();
     textController.text = widget.controller?.value ?? '';
 
@@ -123,7 +123,7 @@ class _BoringTextFieldState extends State<BoringTextField>
         setState(() {
           errorText = null;
         });
-        widget.controller?.value = v;
+        widget.controller?.setValue(v);
         updateValid();
         widget.onChanged?.call(v);
       },
@@ -142,7 +142,7 @@ class _BoringTextFieldState extends State<BoringTextField>
     });
     widget.controller?.shouldReset = false;
     widget.controller?.isResetting = true;
-    widget.controller?.value = widget.initialValue;
+    widget.controller?.setValue(widget.initialValue);
     updateValid();
     textController.text = widget.controller?.value ?? '';
     widget.controller?.isResetting = false;

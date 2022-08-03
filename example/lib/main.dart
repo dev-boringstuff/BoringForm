@@ -167,8 +167,12 @@ class _HomePageState extends State<HomePage> {
                               jsonKey: 'array',
                               label: 'Array field',
                               row: [
-                                const BoringIntField(
-                                    jsonKey: 'int', label: 'int'),
+                                BoringIntField(
+                                    validator: (v) => (v ?? 0) < 10
+                                        ? 'Must be greater than 10'
+                                        : null,
+                                    jsonKey: 'int',
+                                    label: 'int'),
                                 BoringPasswordField(
                                   lg: 4,
                                   md: 6,

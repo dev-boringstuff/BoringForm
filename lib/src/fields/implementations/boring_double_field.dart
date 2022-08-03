@@ -44,7 +44,7 @@ class BoringDoubleField extends StatefulWidget
   final int lg;
 
   @override
-  BoringDoubleField copyWith() {
+  BoringDoubleField copyWith({void Function()? onChangedAux}) {
     return BoringDoubleField(
       jsonKey: jsonKey,
       label: label,
@@ -52,7 +52,10 @@ class BoringDoubleField extends StatefulWidget
       initialValue: initialValue,
       validator: validator,
       controller: controller ?? BoringFieldController<double>(),
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChangedAux?.call();
+        onChanged?.call(value);
+      },
       xs: xs,
       sm: sm,
       md: md,

@@ -9,9 +9,17 @@ class BoringFieldController<T> extends ChangeNotifier {
   bool shouldValidate = false;
   bool isGettingValid = false;
   bool shouldGetValid = false;
+  bool shouldSetValue = false;
+  bool isSettingValue = false;
 
   void reset() {
     shouldReset = true;
+    notifyListeners();
+  }
+
+  void setValue(T? newValue) {
+    value = newValue;
+    shouldSetValue = true;
     notifyListeners();
   }
 

@@ -55,7 +55,7 @@ class BoringDateField extends StatefulWidget
   final DateTime lastDate;
 
   @override
-  BoringDateField copyWith() {
+  BoringDateField copyWith({void Function()? onChangedAux}) {
     return BoringDateField(
       jsonKey: jsonKey,
       label: label,
@@ -63,7 +63,10 @@ class BoringDateField extends StatefulWidget
       initialValue: initialValue,
       validator: validator,
       controller: controller ?? BoringFieldController<DateTime>(),
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChangedAux?.call();
+        onChanged?.call(value);
+      },
       xs: xs,
       sm: sm,
       md: md,

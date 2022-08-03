@@ -45,7 +45,7 @@ class BoringIntField extends StatefulWidget
   final int lg;
 
   @override
-  BoringIntField copyWith() {
+  BoringIntField copyWith({void Function()? onChangedAux}) {
     return BoringIntField(
       jsonKey: jsonKey,
       label: label,
@@ -53,7 +53,10 @@ class BoringIntField extends StatefulWidget
       initialValue: initialValue,
       validator: validator,
       controller: controller ?? BoringFieldController<int>(),
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChangedAux?.call();
+        onChanged?.call(value);
+      },
       xs: xs,
       sm: sm,
       md: md,
@@ -75,7 +78,7 @@ class _BoringIntFieldState extends State<BoringIntField>
   void initState() {
     super.initState();
 
-    widget.controller?.value = widget.initialValue;
+    widget.controller?.setValue(widget.initialValue);
     updateValid();
     textController.text = widget.controller?.value != null
         ? widget.controller!.value.toString()
@@ -115,7 +118,7 @@ class _BoringIntFieldState extends State<BoringIntField>
         setState(() {
           errorText = null;
         });
-        widget.controller?.value = int.tryParse(v);
+        widget.controller?.setValue(int.tryParse(v));
         updateValid();
         widget.onChanged?.call(int.tryParse(v));
       },
@@ -134,7 +137,7 @@ class _BoringIntFieldState extends State<BoringIntField>
     });
     widget.controller?.shouldReset = false;
     widget.controller?.isResetting = true;
-    widget.controller?.value = widget.initialValue;
+    widget.controller?.setValue(widget.initialValue);
     updateValid();
     textController.text = widget.controller?.value != null
         ? widget.controller!.value.toString()

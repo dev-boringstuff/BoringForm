@@ -45,7 +45,7 @@ class BoringDropdown<T> extends StatefulWidget
   final List<DropdownMenuItem<T>> items;
 
   @override
-  BoringDropdown<T> copyWith() {
+  BoringDropdown<T> copyWith({void Function()? onChangedAux}) {
     return BoringDropdown<T>(
       jsonKey: jsonKey,
       label: label,
@@ -54,7 +54,10 @@ class BoringDropdown<T> extends StatefulWidget
       controller: controller ?? BoringFieldController<T>(),
       required: required,
       items: items,
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChangedAux?.call();
+        onChanged?.call(value);
+      },
       xs: xs,
       sm: sm,
       md: md,

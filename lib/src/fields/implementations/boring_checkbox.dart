@@ -38,14 +38,17 @@ class BoringCheckbox extends StatefulWidget implements BoringField<bool> {
   final int lg;
 
   @override
-  BoringCheckbox copyWith() {
+  BoringCheckbox copyWith({void Function()? onChangedAux}) {
     return BoringCheckbox(
       jsonKey: jsonKey,
       label: label,
       helperText: helperText,
       initialValue: initialValue,
       controller: controller ?? BoringFieldController<bool>(),
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChangedAux?.call();
+        onChanged?.call(value);
+      },
       xs: xs,
       sm: sm,
       md: md,

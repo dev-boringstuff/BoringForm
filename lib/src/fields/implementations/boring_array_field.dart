@@ -46,14 +46,17 @@ class BoringArrayField extends StatefulWidget
   final List<BoringField> fields;
 
   @override
-  BoringArrayField copyWith() {
+  BoringArrayField copyWith({void Function()? onChangedAux}) {
     return BoringArrayField(
       jsonKey: jsonKey,
       label: label,
       helperText: helperText,
       initialValue: initialValue,
       controller: controller ?? BoringFieldController<Map<String, dynamic>>(),
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChangedAux?.call();
+        onChanged?.call(value);
+      },
       xs: xs,
       sm: sm,
       md: md,

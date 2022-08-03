@@ -27,7 +27,7 @@ abstract class BoringField<T> extends StatefulWidget {
   final int md;
   final int lg;
 
-  BoringField<T> copyWith();
+  BoringField<T> copyWith({Function()? onChangedAux});
 }
 
 abstract class BoringFieldState<T> {

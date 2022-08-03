@@ -14,16 +14,12 @@ class BoringArrayField2 extends StatefulWidget
     this.initialValue,
     this.controller,
     this.onChanged,
-    required List<BoringField> row,
+    required this.row,
     this.xs = 12,
     this.sm = 12,
     this.md = 12,
     this.lg = 12,
-  })  : row = row.map((field) {
-          var newField = field.copyWith();
-          return newField;
-        }).toList(),
-        assert(onChanged == null, "Do not use onChanged on array field");
+  });
 
   @override
   final String jsonKey;
@@ -49,7 +45,7 @@ class BoringArrayField2 extends StatefulWidget
   final List<BoringField> row;
 
   @override
-  BoringArrayField2 copyWith() {
+  BoringArrayField2 copyWith({void Function()? onChangedAux}) {
     return BoringArrayField2(
       jsonKey: jsonKey,
       label: label,
@@ -57,7 +53,10 @@ class BoringArrayField2 extends StatefulWidget
       initialValue: initialValue,
       controller:
           controller ?? BoringFieldController<List<Map<String, dynamic>>>(),
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChangedAux?.call();
+        onChanged?.call(value);
+      },
       xs: xs,
       sm: sm,
       md: md,
@@ -74,10 +73,41 @@ class _BorinArrayFieldState extends State<BoringArrayField2>
     implements BoringFieldStateWithValidation<List<Map<String, dynamic>>> {
   List<List<BoringField>> rows = [];
 
+  @override
+  void initState() {
+    super.initState();
+
+    updateValid();
+    widget.controller?.addListener(() {
+      if ((widget.controller?.shouldReset ?? false) &&
+          !(widget.controller?.isResetting ?? false)) {
+        reset();
+      }
+    });
+
+    widget.controller?.addListener(() {
+      if ((widget.controller?.shouldGetValid ?? false) &&
+          !(widget.controller?.isGettingValid ?? false)) {
+        updateValid();
+      }
+    });
+
+    widget.controller?.addListener(() {
+      if ((widget.controller?.shouldValidate ?? false) &&
+          !(widget.controller?.isValidating ?? false)) {
+        validate();
+      }
+    });
+  }
+
   void addRow() {
     setState(() {
-      //TODO fix this
-      rows = rows..add(widget.row);
+      rows = rows
+        ..add(widget.row.map((field) {
+          BoringField newField = field.copyWith();
+          newField.controller?.addListener(updateControllerValue);
+          return newField;
+        }).toList());
     });
   }
 
@@ -116,6 +146,15 @@ class _BorinArrayFieldState extends State<BoringArrayField2>
     widget.controller?.value = getValue();
   }
 
+//TODO end this function
+  void copyFromIndex(int targetIndex, {int? destinationIndex = -1}) {
+    List<BoringField> newRow = widget.row.map((field) {
+      BoringField newField = field.copyWith();
+      newField.controller?.addListener(updateControllerValue);
+      return newField;
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -130,9 +169,14 @@ class _BorinArrayFieldState extends State<BoringArrayField2>
                 constraints:
                     const BoxConstraints(minWidth: 800, maxWidth: 1200),
                 child: Row(
-                  children: rows[index]
-                      .map((field) => Expanded(child: field))
-                      .toList(),
+                  children: [
+                    ...rows[index].map((field) {
+                      return Expanded(child: field);
+                    }).toList(),
+                    IconButton(
+                        onPressed: () => copyFromIndex(index),
+                        icon: Icon(Icons.copy))
+                  ],
                 ),
               );
             },
@@ -144,18 +188,35 @@ class _BorinArrayFieldState extends State<BoringArrayField2>
 
   @override
   void reset() {
+    widget.controller?.shouldReset = false;
+    widget.controller?.isResetting = true;
     setState(() {
-      rows = [widget.row];
+      rows = [];
     });
+    widget.controller?.isResetting = false;
   }
 
   @override
   void updateValid() {
-    // TODO: implement updateValid
+    var valid = true;
+    for (var row in rows) {
+      for (var field in row) {
+        field.controller?.getValid();
+        valid &= field.controller?.valid ?? false;
+      }
+    }
+    widget.controller?.valid = valid;
   }
 
   @override
   void validate() {
-    // TODO: implement validate
+    widget.controller?.shouldValidate = false;
+    widget.controller?.isValidating = true;
+    for (var row in rows) {
+      for (var field in row) {
+        field.controller?.validate();
+      }
+    }
+    widget.controller?.isValidating = false;
   }
 }
