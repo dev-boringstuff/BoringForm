@@ -12,3 +12,4 @@ export 'src/fields/implementations/boring_date_field.dart';
 export 'src/fields/implementations/boring_checkbox.dart';
 export 'src/fields/implementations/boring_dropdown.dart';
 export 'src/fields/implementations/boring_array_field.dart';
+export 'src/fields/implementations/boring_array_field_2.dart';

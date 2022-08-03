@@ -163,10 +163,10 @@ class _HomePageState extends State<HomePage> {
                                 }
                               },
                             ),
-                            BoringArrayField(
+                            BoringArrayField2(
                               jsonKey: 'array',
                               label: 'Array field',
-                              fields: [
+                              row: [
                                 const BoringIntField(
                                     jsonKey: 'int', label: 'int'),
                                 BoringPasswordField(
