@@ -163,19 +163,25 @@ class _HomePageState extends State<HomePage> {
                                 }
                               },
                             ),
-                            BoringArrayField2(
+                            BoringArrayField(
                               jsonKey: 'array',
                               label: 'Array field',
                               row: [
                                 BoringIntField(
+                                    lg: 6,
+                                    md: 6,
+                                    sm: 6,
+                                    xs: 6,
                                     validator: (v) => (v ?? 0) < 10
                                         ? 'Must be greater than 10'
                                         : null,
                                     jsonKey: 'int',
                                     label: 'int'),
                                 BoringPasswordField(
-                                  lg: 4,
+                                  lg: 6,
                                   md: 6,
+                                  sm: 6,
+                                  xs: 6,
                                   jsonKey: 'password',
                                   label: 'Password',
                                   validator: (v) {

@@ -1,10 +1,9 @@
-import 'package:boring_form_builder/src/fields/boring_field.dart';
-import 'package:boring_form_builder/src/fields/boring_field_controller.dart';
+import 'package:boring_form_builder/boring_form_builder.dart';
 import 'package:flutter/material.dart';
 
 class BoringArrayField extends StatefulWidget
-    implements BoringField<Map<String, dynamic>> {
-  BoringArrayField({
+    implements BoringField<List<Map<String, dynamic>>> {
+  const BoringArrayField({
     super.key,
     required this.jsonKey,
     required this.label,
@@ -12,16 +11,12 @@ class BoringArrayField extends StatefulWidget
     this.initialValue,
     this.controller,
     this.onChanged,
-    required List<BoringField> fields,
+    required this.row,
     this.xs = 12,
     this.sm = 12,
     this.md = 12,
     this.lg = 12,
-  })  : fields = fields.map((field) {
-          var newField = field.copyWith();
-          return newField;
-        }).toList(),
-        assert(onChanged == null, "Do not use onChanged on array field");
+  });
 
   @override
   final String jsonKey;
@@ -30,11 +25,11 @@ class BoringArrayField extends StatefulWidget
   @override
   final String? helperText;
   @override
-  final Map<String, dynamic>? initialValue;
+  final List<Map<String, dynamic>>? initialValue;
   @override
-  final BoringFieldController<Map<String, dynamic>>? controller;
+  final BoringFieldController<List<Map<String, dynamic>>>? controller;
   @override
-  final void Function(Map<String, dynamic>?)? onChanged;
+  final void Function(List<Map<String, dynamic>>?)? onChanged;
   @override
   final int xs;
   @override
@@ -43,7 +38,8 @@ class BoringArrayField extends StatefulWidget
   final int md;
   @override
   final int lg;
-  final List<BoringField> fields;
+
+  final List<BoringField> row;
 
   @override
   BoringArrayField copyWith({void Function()? onChangedAux}) {
@@ -52,7 +48,8 @@ class BoringArrayField extends StatefulWidget
       label: label,
       helperText: helperText,
       initialValue: initialValue,
-      controller: controller ?? BoringFieldController<Map<String, dynamic>>(),
+      controller:
+          controller ?? BoringFieldController<List<Map<String, dynamic>>>(),
       onChanged: (value) {
         onChangedAux?.call();
         onChanged?.call(value);
@@ -61,16 +58,17 @@ class BoringArrayField extends StatefulWidget
       sm: sm,
       md: md,
       lg: lg,
-      fields: fields,
+      row: row,
     );
   }
 
   @override
-  State<BoringArrayField> createState() => _BoringTextFieldState();
+  State<StatefulWidget> createState() => _BorinArrayFieldState();
 }
 
-class _BoringTextFieldState extends State<BoringArrayField>
-    implements BoringFieldStateWithValidation<String> {
+class _BorinArrayFieldState extends State<BoringArrayField>
+    implements BoringFieldStateWithValidation<List<Map<String, dynamic>>> {
+  List<List<BoringField>> rows = [];
   double fieldWidth = double.infinity;
 
   @override
@@ -100,62 +98,132 @@ class _BoringTextFieldState extends State<BoringArrayField>
     });
   }
 
+  void addRow() {
+    setState(() {
+      rows = rows
+        ..add(widget.row.map((field) {
+          BoringField newField = field.copyWith();
+          newField.controller?.addListener(updateControllerValue);
+          return newField;
+        }).toList());
+    });
+  }
+
+  void removeRow(int index) {
+    setState(() {
+      rows = rows..removeAt(index);
+    });
+  }
+
+  bool validateRow(List<BoringField> row) {
+    for (var field in row) {
+      if (!field.controller!.valid) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  Map<String, dynamic> getRowValue(List<BoringField> row) {
+    Map<String, dynamic> value = {};
+    for (var field in row) {
+      value[field.jsonKey] = field.controller?.value;
+    }
+    return value;
+  }
+
+  List<Map<String, dynamic>> getValue() {
+    List<Map<String, dynamic>> value = [];
+    for (var row in rows) {
+      value.add(getRowValue(row));
+    }
+    return value;
+  }
+
+  void updateControllerValue() {
+    widget.controller?.value = getValue();
+  }
+
+//TODO end this function
+  void copyFromIndex(int targetIndex, {int? destinationIndex = -1}) {
+    List<BoringField> newRow = widget.row.map((field) {
+      BoringField newField = field.copyWith();
+      newField.controller?.addListener(updateControllerValue);
+      return newField;
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     const fieldMargin = 6.0;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          final renderBox = context.findRenderObject() as RenderBox;
-          setState(() {
-            fieldWidth = renderBox.size.width;
-          });
-        });
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              widget.label,
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            IconButton(onPressed: addRow, icon: const Icon(Icons.add)),
+          ],
+        ),
+        widget.helperText != null
+            ? Text(
+                widget.helperText!,
+                style: Theme.of(context).textTheme.headline6,
+              )
+            : const SizedBox.shrink(),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: rows.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Row(
+              children: [
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        final renderBox =
+                            context.findRenderObject() as RenderBox;
+                        setState(() {
+                          fieldWidth = renderBox.size.width;
+                        });
+                      });
 
-        return SizedBox(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.label,
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              widget.helperText != null
-                  ? Text(
-                      widget.helperText!,
-                      style: Theme.of(context).textTheme.headline6,
-                    )
-                  : const SizedBox.shrink(),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  return Wrap(
-                    children: List.generate(
-                      widget.fields.length,
-                      (index) => Container(
-                        width: (fieldWidth /
-                                12 *
-                                (constraints.maxWidth >= 1240
-                                    ? widget.fields[index].lg
-                                    : constraints.maxWidth >= 905
-                                        ? widget.fields[index].md
-                                        : constraints.maxWidth >= 600
-                                            ? widget.fields[index].sm
-                                            : widget.fields[index].xs) -
-                            fieldMargin * 2),
-                        margin:
-                            const EdgeInsets.symmetric(horizontal: fieldMargin),
-                        child: widget.fields[index],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        );
-      },
+                      return Wrap(
+                        children: List.generate(
+                          rows[index].length,
+                          (i) => Container(
+                            width: (fieldWidth /
+                                    12 *
+                                    (constraints.maxWidth >= 1240
+                                        ? rows[index][i].lg
+                                        : constraints.maxWidth >= 905
+                                            ? rows[index][i].md
+                                            : constraints.maxWidth >= 600
+                                                ? rows[index][i].sm
+                                                : rows[index][i].xs) -
+                                fieldMargin * 2),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: fieldMargin),
+                            child: rows[index][i],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => copyFromIndex(index),
+                  icon: const Icon(Icons.copy),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -163,21 +231,20 @@ class _BoringTextFieldState extends State<BoringArrayField>
   void reset() {
     widget.controller?.shouldReset = false;
     widget.controller?.isResetting = true;
-    var value = <String, dynamic>{};
-    for (var field in widget.fields) {
-      field.controller?.reset();
-      value[field.jsonKey] = field.controller?.value;
-    }
-    widget.controller?.value = value;
+    setState(() {
+      rows = [];
+    });
     widget.controller?.isResetting = false;
   }
 
   @override
   void updateValid() {
     var valid = true;
-    for (var field in widget.fields) {
-      field.controller?.getValid();
-      valid &= field.controller?.valid ?? false;
+    for (var row in rows) {
+      for (var field in row) {
+        field.controller?.getValid();
+        valid &= field.controller?.valid ?? false;
+      }
     }
     widget.controller?.valid = valid;
   }
@@ -186,8 +253,10 @@ class _BoringTextFieldState extends State<BoringArrayField>
   void validate() {
     widget.controller?.shouldValidate = false;
     widget.controller?.isValidating = true;
-    for (var field in widget.fields) {
-      field.controller?.validate();
+    for (var row in rows) {
+      for (var field in row) {
+        field.controller?.validate();
+      }
     }
     widget.controller?.isValidating = false;
   }
