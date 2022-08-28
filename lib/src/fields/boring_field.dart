@@ -21,6 +21,7 @@ abstract class BoringField<T> extends StatefulWidget {
 
   bool get isValid;
   T get value;
+  set setValue(T value);
   final String jsonKey;
 
   final T? initialValue;

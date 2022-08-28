@@ -34,6 +34,11 @@ class BoringTexField extends BoringField<String> {
       (validator != null) ? validator?.call(value) == null : true;
   @override
   _BoringTextFieldState createState() => _BoringTextFieldState();
+
+  @override
+  set setValue(String value) {
+    textController.text = value;
+  }
 }
 
 class _BoringTextFieldState extends BoringFieldState<BoringTexField> {
