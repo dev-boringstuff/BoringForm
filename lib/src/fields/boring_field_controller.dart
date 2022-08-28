@@ -1,35 +1,16 @@
 import 'package:flutter/material.dart';
 
 class BoringFieldController<T> extends ChangeNotifier {
-  T? value;
-  bool valid = false;
-  bool isResetting = false;
-  bool shouldReset = false;
-  bool isValidating = false;
-  bool shouldValidate = false;
-  bool isGettingValid = false;
-  bool shouldGetValid = false;
-  bool shouldSetValue = false;
-  bool isSettingValue = false;
-
-  void reset() {
-    shouldReset = true;
-    notifyListeners();
-  }
-
-  void setValue(T? newValue) {
-    value = newValue;
-    shouldSetValue = true;
-    notifyListeners();
-  }
-
-  void getValid() {
-    shouldGetValid = true;
-    notifyListeners();
+  BoringFieldController() : super();
+  T? Function() getValue = () => null;
+  void Function() reset = () {};
+  void addValidationCallback(void Function() listener) {
+    addListener(listener);
   }
 
   void validate() {
-    shouldValidate = true;
     notifyListeners();
   }
+
+  bool Function() isValid = () => false;
 }
