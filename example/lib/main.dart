@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-  final BoringFormController formController1 = BoringFormController();
+  final BoringFieldController formController1 = BoringFieldController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +40,8 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                BoringForm(
-                  controller: formController1,
+                BoringFormNew(
+                  boringFieldController: formController1,
                   sections: [
                     BoringSection(
                       boringFieldController: BoringFieldController(),
@@ -70,7 +70,7 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 4),
               ElevatedButton(
                 onPressed: () {
-                  debugPrint(formController1.valid.toString());
+                  debugPrint(formController1.isValid().toString());
                 },
                 child: const Text('Get valid 1'),
               ),
@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 4),
               ElevatedButton(
                 onPressed: () {
-                  debugPrint(formController1.value.toString());
+                  debugPrint(formController1.getValue().toString());
                 },
                 child: const Text('Get values 1'),
               ),

@@ -43,23 +43,6 @@ class BoringSection extends BoringField {
 class _BoringSectionState extends BoringFieldState<BoringSection> {
   double sectionWidth = double.infinity;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   widget.boringFieldController.addListener(() {
-  //     if ((widget.boringFieldController.state.shouldReset ?? false) &&
-  //         !(widget.boringFieldController.state.isResetting ?? false)) {
-  //       reset();
-  //     }
-
-  //     if ((widget.boringFieldController.state.shouldValidate ?? false) &&
-  //         !(widget.boringFieldController.state.isValidating ?? false)) {
-  //       validate();
-  //     }
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     const fieldMargin = 6.0;
