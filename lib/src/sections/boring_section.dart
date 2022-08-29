@@ -1,75 +1,49 @@
-import 'package:boring_form_builder/src/fields/boring_field.dart';
-import 'package:boring_form_builder/src/sections/boring_section_controller.dart';
+import 'package:boring_form_builder/boring_form_builder.dart';
 import 'package:flutter/material.dart';
 
-class BoringSection extends StatefulWidget {
-  BoringSection({
-    super.key,
-    this.title,
-    this.subtitle,
-    required List<BoringField> fields,
-    this.jsonKey,
-    this.controller,
-  }) : // Aggiungo i controller ai field se non sono presenti
-        fields = fields.map((field) {
-          final newField = field.copyWith();
-          return newField;
-        }).toList();
+class BoringSection extends BoringField {
+  BoringSection(
+      {required this.fields,
+      this.title,
+      this.description,
+      this.subtitle,
+      required super.boringFieldController,
+      required super.jsonKey});
 
-  final String? title;
-  final String? subtitle;
-  final String? jsonKey;
-  final List<BoringField> fields;
-  final BoringSectionController? controller;
+  List<BoringField> fields;
+  String? title, subtitle, description;
 
-  BoringSection copyWith() {
-    return BoringSection(
-      jsonKey: jsonKey,
-      title: title,
-      subtitle: subtitle,
-      fields: fields,
-      controller: controller ?? BoringSectionController(),
-    );
+  @override
+  _BoringSectionState createState() => _BoringSectionState();
+
+  @override
+  bool get isValid => fields.every((element) => element.isValid);
+
+  @override
+  void onChanged(value) {
+    throw UnimplementedError();
   }
 
   @override
-  State<BoringSection> createState() => _BoringSectionState();
+  set setValue(value) {
+    throw UnimplementedError();
+  }
+
+  @override
+  get value {
+    Map<String, dynamic> sectionValue = {};
+    for (var element in fields) {
+      sectionValue[element.jsonKey] = element.value;
+    }
+  }
 }
 
-class _BoringSectionState extends State<BoringSection> {
+class _BoringSectionState extends BoringFieldState<BoringSection> {
   double sectionWidth = double.infinity;
-
-  @override
-  void initState() {
-    super.initState();
-
-    widget.controller?.addListener(() {
-      if ((widget.controller?.state.shouldReset ?? false) &&
-          !(widget.controller?.state.isResetting ?? false)) {
-        _reset();
-      }
-
-      if ((widget.controller?.state.shouldValidate ?? false) &&
-          !(widget.controller?.state.isValidating ?? false)) {
-        _validate();
-      }
-
-      if ((widget.controller?.state.shouldUpdateValid ?? false) &&
-          !(widget.controller?.state.isUpdatingValid ?? false)) {
-        _updateValid();
-      }
-
-      if ((widget.controller?.state.shouldGetValue ?? false) &&
-          !(widget.controller?.state.isGettingValue ?? false)) {
-        _getValue();
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     const fieldMargin = 6.0;
-
     return Builder(
       builder: (context) {
         // Setto la variabile della width basandomi sulla width renderizzata
@@ -129,44 +103,17 @@ class _BoringSectionState extends State<BoringSection> {
     );
   }
 
-  void _reset() {
-    widget.controller?.state.shouldReset = false;
-    widget.controller?.state.isResetting = true;
+  @override
+  void reset() {
     for (var field in widget.fields) {
-      field.controller?.reset();
+      field.boringFieldController.reset();
     }
-    widget.controller?.state.isResetting = false;
   }
 
-  void _updateValid() {
-    widget.controller?.state.shouldUpdateValid = false;
-    widget.controller?.state.isUpdatingValid = true;
-    bool isValid = true;
+  @override
+  void validate() {
     for (var field in widget.fields) {
-      field.controller?.getValid();
-      isValid &= field.controller?.valid ?? false;
+      field.boringFieldController.validate();
     }
-    widget.controller?.valid = isValid;
-    widget.controller?.state.isUpdatingValid = false;
-  }
-
-  void _validate() {
-    widget.controller?.state.shouldValidate = false;
-    widget.controller?.state.isValidating = true;
-    for (var field in widget.fields) {
-      field.controller?.validate();
-    }
-    widget.controller?.state.isValidating = false;
-  }
-
-  void _getValue() {
-    widget.controller?.state.shouldGetValue = false;
-    widget.controller?.state.isGettingValue = true;
-    final valuesMap = <String, dynamic>{};
-    for (var field in widget.fields) {
-      valuesMap[field.jsonKey] = field.controller?.value;
-    }
-    widget.controller?.value = valuesMap;
-    widget.controller?.state.isGettingValue = false;
   }
 }

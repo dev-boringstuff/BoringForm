@@ -3,7 +3,7 @@ import 'package:boring_form_builder/src/fields/boring_field_controller.dart';
 import 'package:boring_form_builder/src/fields/boring_field_with_validation.dart';
 import 'package:flutter/material.dart';
 
-class BoringTextField extends StatefulWidget
+class BoringTextFieldOLD extends StatefulWidget
     implements BoringFieldWithValidation<String> {
   const BoringTextField({
     Key? key,

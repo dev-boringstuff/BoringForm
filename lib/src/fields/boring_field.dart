@@ -9,11 +9,18 @@ abstract class BoringField<T> extends StatefulWidget {
       required this.jsonKey,
       this.label,
       this.helperText,
+      this.lg = 12,
+      this.md = 12,
+      this.sm = 12,
+      this.xs = 12,
       this.validator})
       : super(key: key) {
     boringFieldController.getValue = () => value;
     boringFieldController.isValid = () => isValid;
   }
+
+  final int xs, sm, md, lg;
+
   final BoringFieldController boringFieldController;
   void onChanged(T value);
 
