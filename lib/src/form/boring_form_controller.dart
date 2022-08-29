@@ -1,38 +1,55 @@
 import 'package:flutter/material.dart';
 
-class BoringFormController extends ChangeNotifier {
+class BoringFormControllerState {
   Map<String, dynamic>? receivedValue;
-  bool receivedValid = false;
-  bool isResetting = false;
-  bool shouldReset = false;
-  bool isGettingValue = false;
-  bool shouldGetValue = false;
-  bool isGettingValid = false;
-  bool shouldGetValid = false;
-  bool isValidating = false;
-  bool shouldValidate = false;
+  bool receivedValid;
+  bool isResetting;
+  bool shouldReset;
+  bool isGettingValue;
+  bool shouldGetValue;
+  bool isGettingValid;
+  bool shouldGetValid;
+  bool isValidating;
+  bool shouldValidate;
+
+  BoringFormControllerState({
+    this.receivedValue,
+    this.receivedValid = false,
+    this.isResetting = false,
+    this.shouldReset = false,
+    this.isGettingValue = false,
+    this.shouldGetValue = false,
+    this.isGettingValid = false,
+    this.shouldGetValid = false,
+    this.isValidating = false,
+    this.shouldValidate = false,
+  });
+}
+
+class BoringFormController extends ChangeNotifier {
+  BoringFormControllerState state = BoringFormControllerState();
 
   void reset() {
-    shouldReset = true;
+    state.shouldReset = true;
     notifyListeners();
   }
 
   Map<String, dynamic>? get value {
-    shouldGetValue = true;
+    state.shouldGetValue = true;
     notifyListeners();
 
-    return receivedValue;
+    return state.receivedValue;
   }
 
   bool get valid {
-    shouldGetValid = true;
+    state.shouldGetValid = true;
     notifyListeners();
 
-    return receivedValid;
+    return state.receivedValid;
   }
 
   void validate() {
-    shouldValidate = true;
+    state.shouldValidate = true;
     notifyListeners();
   }
 }

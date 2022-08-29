@@ -1,4 +1,5 @@
-import 'package:boring_form_builder/boring_form_builder.dart';
+import 'package:boring_form_builder/src/form/boring_form_controller.dart';
+import 'package:boring_form_builder/src/sections/boring_section.dart';
 import 'package:flutter/material.dart';
 
 class BoringForm extends StatefulWidget {
@@ -8,10 +9,12 @@ class BoringForm extends StatefulWidget {
     required List<BoringSection> sections,
     this.title,
     this.subtitle,
-  }) : sections = sections.map((section) {
+  }) : // Aggiungo i controller alle section se non sono presenti
+        sections = sections.map((section) {
           final newSection = section.copyWith();
           return newSection;
         }).toList() {
+    // Verifico che le json key non si ripetano nell'albero della form
     var jsonkeysAreValid = true;
     List<String> usedKeys = [];
     for (var section in sections) {
@@ -51,18 +54,20 @@ class _BoringFormState extends State<BoringForm> {
     super.initState();
 
     widget.controller.addListener(() {
-      if (widget.controller.shouldReset && !widget.controller.isResetting) {
+      if (widget.controller.state.shouldReset &&
+          !widget.controller.state.isResetting) {
         _reset();
       }
-      if (widget.controller.shouldGetValid &&
-          !widget.controller.isGettingValid) {
+      if (widget.controller.state.shouldGetValid &&
+          !widget.controller.state.isGettingValid) {
         _getValid();
       }
-      if (widget.controller.shouldValidate && !widget.controller.isValidating) {
+      if (widget.controller.state.shouldValidate &&
+          !widget.controller.state.isValidating) {
         _validate();
       }
-      if (widget.controller.shouldGetValue &&
-          !widget.controller.isGettingValue) {
+      if (widget.controller.state.shouldGetValue &&
+          !widget.controller.state.isGettingValue) {
         _getValue();
       }
     });
@@ -94,38 +99,38 @@ class _BoringFormState extends State<BoringForm> {
   }
 
   void _reset() {
-    widget.controller.shouldReset = false;
-    widget.controller.isResetting = true;
+    widget.controller.state.shouldReset = false;
+    widget.controller.state.isResetting = true;
     for (var section in widget.sections) {
       section.controller?.reset();
     }
-    widget.controller.isResetting = false;
+    widget.controller.state.isResetting = false;
   }
 
   void _getValid() {
-    widget.controller.shouldGetValid = false;
-    widget.controller.isGettingValue = true;
+    widget.controller.state.shouldGetValid = false;
+    widget.controller.state.isGettingValue = true;
     bool isValid = true;
     for (var section in widget.sections) {
       section.controller?.updateValid();
       isValid &= section.controller?.valid ?? false;
     }
-    widget.controller.receivedValid = isValid;
-    widget.controller.isGettingValue = false;
+    widget.controller.state.receivedValid = isValid;
+    widget.controller.state.isGettingValue = false;
   }
 
   void _validate() {
-    widget.controller.shouldValidate = false;
-    widget.controller.isValidating = true;
+    widget.controller.state.shouldValidate = false;
+    widget.controller.state.isValidating = true;
     for (var section in widget.sections) {
       section.controller?.validate();
     }
-    widget.controller.isValidating = false;
+    widget.controller.state.isValidating = false;
   }
 
   void _getValue() {
-    widget.controller.shouldGetValue = false;
-    widget.controller.isGettingValue = true;
+    widget.controller.state.shouldGetValue = false;
+    widget.controller.state.isGettingValue = true;
     final newValue = <String, dynamic>{};
     for (var section in widget.sections) {
       section.controller?.getValue();
@@ -136,7 +141,7 @@ class _BoringFormState extends State<BoringForm> {
         sectionValue.forEach((k, v) => newValue[k] = v);
       }
     }
-    widget.controller.receivedValue = newValue;
-    widget.controller.isGettingValue = false;
+    widget.controller.state.receivedValue = newValue;
+    widget.controller.state.isGettingValue = false;
   }
 }

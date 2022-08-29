@@ -1,34 +1,49 @@
 import 'package:flutter/material.dart';
 
+class BoringSectionControllerState {
+  bool isResetting;
+  bool shouldReset;
+  bool isValidating;
+  bool shouldValidate;
+  bool isUpdatingValid;
+  bool shouldUpdateValid;
+  bool isGettingValue;
+  bool shouldGetValue;
+
+  BoringSectionControllerState({
+    this.isResetting = false,
+    this.shouldReset = false,
+    this.isValidating = false,
+    this.shouldValidate = false,
+    this.isUpdatingValid = false,
+    this.shouldUpdateValid = false,
+    this.isGettingValue = false,
+    this.shouldGetValue = false,
+  });
+}
+
 class BoringSectionController extends ChangeNotifier {
   bool valid = false;
   Map<String, dynamic> value = {};
-  bool isResetting = false;
-  bool shouldReset = false;
-  bool isValidating = false;
-  bool shouldValidate = false;
-  bool isUpdatingValid = false;
-  bool shouldUpdateValid = false;
-  bool isGettingValue = false;
-  bool shouldGetValue = false;
+  BoringSectionControllerState state = BoringSectionControllerState();
 
   void reset() {
-    shouldReset = true;
+    state.shouldReset = true;
     notifyListeners();
   }
 
   void validate() {
-    shouldValidate = true;
+    state.shouldValidate = true;
     notifyListeners();
   }
 
   void updateValid() {
-    shouldUpdateValid = true;
+    state.shouldUpdateValid = true;
     notifyListeners();
   }
 
   void getValue() {
-    shouldGetValue = true;
+    state.shouldGetValue = true;
     notifyListeners();
   }
 }

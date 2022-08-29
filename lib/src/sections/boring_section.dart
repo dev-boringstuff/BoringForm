@@ -10,7 +10,8 @@ class BoringSection extends StatefulWidget {
     required List<BoringField> fields,
     this.jsonKey,
     this.controller,
-  }) : fields = fields.map((field) {
+  }) : // Aggiungo i controller ai field se non sono presenti
+        fields = fields.map((field) {
           final newField = field.copyWith();
           return newField;
         }).toList();
@@ -43,23 +44,23 @@ class _BoringSectionState extends State<BoringSection> {
     super.initState();
 
     widget.controller?.addListener(() {
-      if ((widget.controller?.shouldReset ?? false) &&
-          !(widget.controller?.isResetting ?? false)) {
+      if ((widget.controller?.state.shouldReset ?? false) &&
+          !(widget.controller?.state.isResetting ?? false)) {
         _reset();
       }
 
-      if ((widget.controller?.shouldValidate ?? false) &&
-          !(widget.controller?.isValidating ?? false)) {
+      if ((widget.controller?.state.shouldValidate ?? false) &&
+          !(widget.controller?.state.isValidating ?? false)) {
         _validate();
       }
 
-      if ((widget.controller?.shouldUpdateValid ?? false) &&
-          !(widget.controller?.isUpdatingValid ?? false)) {
+      if ((widget.controller?.state.shouldUpdateValid ?? false) &&
+          !(widget.controller?.state.isUpdatingValid ?? false)) {
         _updateValid();
       }
 
-      if ((widget.controller?.shouldGetValue ?? false) &&
-          !(widget.controller?.isGettingValue ?? false)) {
+      if ((widget.controller?.state.shouldGetValue ?? false) &&
+          !(widget.controller?.state.isGettingValue ?? false)) {
         _getValue();
       }
     });
@@ -69,8 +70,9 @@ class _BoringSectionState extends State<BoringSection> {
   Widget build(BuildContext context) {
     const fieldMargin = 6.0;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
+    return Builder(
+      builder: (context) {
+        // Setto la variabile della width basandomi sulla width renderizzata
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final renderBox = context.findRenderObject() as RenderBox;
           setState(() {
@@ -97,6 +99,7 @@ class _BoringSectionState extends State<BoringSection> {
                   : const SizedBox.shrink(),
               LayoutBuilder(
                 builder: (context, constraints) {
+                  // Calcolo la width dei field
                   return Wrap(
                     children: List.generate(
                       widget.fields.length,
@@ -127,31 +130,43 @@ class _BoringSectionState extends State<BoringSection> {
   }
 
   void _reset() {
+    widget.controller?.state.shouldReset = false;
+    widget.controller?.state.isResetting = true;
     for (var field in widget.fields) {
       field.controller?.reset();
     }
+    widget.controller?.state.isResetting = false;
   }
 
   void _updateValid() {
+    widget.controller?.state.shouldUpdateValid = false;
+    widget.controller?.state.isUpdatingValid = true;
     bool isValid = true;
     for (var field in widget.fields) {
       field.controller?.getValid();
       isValid &= field.controller?.valid ?? false;
     }
     widget.controller?.valid = isValid;
+    widget.controller?.state.isUpdatingValid = false;
   }
 
   void _validate() {
+    widget.controller?.state.shouldValidate = false;
+    widget.controller?.state.isValidating = true;
     for (var field in widget.fields) {
       field.controller?.validate();
     }
+    widget.controller?.state.isValidating = false;
   }
 
   void _getValue() {
+    widget.controller?.state.shouldGetValue = false;
+    widget.controller?.state.isGettingValue = true;
     final valuesMap = <String, dynamic>{};
     for (var field in widget.fields) {
       valuesMap[field.jsonKey] = field.controller?.value;
     }
     widget.controller?.value = valuesMap;
+    widget.controller?.state.isGettingValue = false;
   }
 }

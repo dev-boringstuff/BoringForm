@@ -76,6 +76,9 @@ class _HomePageState extends State<HomePage> {
                                   return null;
                                 }
                               },
+                              onChanged: ((value) {
+                                debugPrint("Name Changed: $value");
+                              }),
                             ),
                             const BoringTextField(
                               lg: 4,
@@ -136,6 +139,7 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                             const BoringCheckbox(
+                              initialValue: true,
                               jsonKey: 'key4',
                               label: 'label4',
                             ),
@@ -162,8 +166,20 @@ class _HomePageState extends State<HomePage> {
                                   return null;
                                 }
                               },
+                              onChanged: ((value) {
+                                debugPrint("CAP Changed: $value");
+                              }),
+                            ),
+                            BoringDoubleField(
+                              jsonKey: 'double',
+                              label: 'double',
+                              initialValue: 5.5,
+                              onChanged: (value) {
+                                debugPrint("double changed: $value");
+                              },
                             ),
                             BoringArrayField(
+                              expandable: true,
                               jsonKey: 'array',
                               label: 'Array field',
                               row: [
@@ -269,6 +285,13 @@ class _HomePageState extends State<HomePage> {
                     debugPrint(form2Controller.valid.toString());
                   },
                   child: const Text('Get valid 2'),
+                ),
+                const SizedBox(height: 4),
+                ElevatedButton(
+                  onPressed: () {
+                    form2Controller.validate();
+                  },
+                  child: const Text('Validate 2'),
                 ),
               ],
             ),
