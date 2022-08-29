@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class BoringFieldController<T> extends ChangeNotifier {
+class BoringFieldController<T> {
   T? Function() getValue = () => null;
   bool Function() isValid = () => true;
   void Function(T value) setValue = (value) {};

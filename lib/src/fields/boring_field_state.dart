@@ -5,7 +5,7 @@ abstract class BoringFieldState<T extends BoringField> extends State<T> {
   @override
   void initState() {
     widget.boringFieldController.addValidationCallback(validate);
-    widget.boringFieldController.addListener(reset);
+    widget.boringFieldController.addResetCallback(reset);
     super.initState();
   }
 
