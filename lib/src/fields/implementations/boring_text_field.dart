@@ -19,10 +19,6 @@ class BoringTexField extends BoringField<String> {
 
   @override
   String get value => textController.text;
-  @override
-  void reset() {
-    textController.text = defaultValue;
-  }
 
   @override
   void onChanged(String value) {
@@ -58,5 +54,10 @@ class _BoringTextFieldState extends BoringFieldState<BoringTexField> {
       controller: widget.textController,
       onChanged: (value) => widget.onChanged(value),
     );
+  }
+
+  @override
+  void reset() {
+    widget.textController.text = widget.defaultValue;
   }
 }
