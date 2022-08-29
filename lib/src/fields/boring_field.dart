@@ -12,12 +12,10 @@ abstract class BoringField<T> extends StatefulWidget {
       this.validator})
       : super(key: key) {
     boringFieldController.getValue = () => value;
-    boringFieldController.reset = reset;
     boringFieldController.isValid = () => isValid;
   }
   final BoringFieldController boringFieldController;
   void onChanged(T value);
-  void reset();
 
   bool get isValid;
   T get value;
