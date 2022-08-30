@@ -181,15 +181,13 @@ class _HomePageState extends State<HomePage> {
                               }),
                               controller: BoringController(),
                             ),
-                            /*
                             BoringDoubleField(
                               jsonKey: 'double',
-                              label: 'double',
+                              title: 'double',
                               initialValue: 5.5,
-                              onChanged: (value) {
-                                debugPrint("double changed: $value");
-                              },
+                              controller: BoringController(),
                             ),
+                            /*
                             BoringArrayField(
                               expandable: true,
                               jsonKey: 'array',
