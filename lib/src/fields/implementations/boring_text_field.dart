@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class BoringTextField extends BoringField<String> {
   BoringTextField({
     super.initialValue = '',
-    this.validator,
+    super.validator,
     required super.controller,
     super.title,
     super.helperText,
@@ -23,8 +23,6 @@ class BoringTextField extends BoringField<String> {
   final bool enableSuggestions;
   final bool autocorrect;
   final TextEditingController textController = TextEditingController();
-  @override
-  final String? Function(String)? validator;
 
   @override
   String get value => textController.text;

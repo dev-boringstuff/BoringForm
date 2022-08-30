@@ -77,7 +77,8 @@ class _HomePageState extends State<HomePage> {
                                   return null;
                                 }
                               },
-                              onChanged: (p0) => debugPrint(p0),
+                              onChanged: (value) =>
+                                  debugPrint('Name changed: $value'),
                               controller: BoringController(),
                             ),
                             BoringTextField(

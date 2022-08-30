@@ -6,7 +6,7 @@ class BoringPasswordField extends BoringField<String> {
   BoringPasswordField({
     super.initialValue = '',
     super.onChanged,
-    this.validator,
+    super.validator,
     required super.controller,
     super.title,
     super.helperText,
@@ -19,8 +19,6 @@ class BoringPasswordField extends BoringField<String> {
   });
 
   final TextEditingController textController = TextEditingController();
-  @override
-  final String? Function(String)? validator;
 
   @override
   String get value => textController.text;
