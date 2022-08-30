@@ -1,18 +1,21 @@
 import 'package:boring_form_builder/boring_form_builder.dart';
+import 'package:boring_form_builder/src/fields/boring_field_state.dart';
 import 'package:flutter/material.dart';
 
 class BoringSection extends BoringField {
-  BoringSection(
-      {super.key,
-      required this.fields,
-      this.title,
-      this.description,
-      this.subtitle,
-      required super.boringFieldController,
-      required super.jsonKey});
+  BoringSection({
+    super.key,
+    required super.jsonKey,
+    super.title,
+    required super.controller,
+    required this.fields,
+    this.description,
+    this.subtitle,
+  });
 
   final List<BoringField> fields;
-  final String? title, subtitle, description;
+  final String? subtitle;
+  final String? description;
 
   @override
   BoringFieldState<BoringSection> createState() => _BoringSectionState();
@@ -73,6 +76,9 @@ class _BoringSectionState extends BoringFieldState<BoringSection> {
                       style: Theme.of(context).textTheme.headline6,
                     )
                   : const SizedBox.shrink(),
+              widget.description != null
+                  ? Text(widget.description!)
+                  : const SizedBox.shrink(),
               LayoutBuilder(
                 builder: (context, constraints) {
                   // Calcolo la width dei field
@@ -108,14 +114,14 @@ class _BoringSectionState extends BoringFieldState<BoringSection> {
   @override
   void reset() {
     for (var field in widget.fields) {
-      field.boringFieldController.reset();
+      field.controller.reset();
     }
   }
 
   @override
   void validate() {
     for (var field in widget.fields) {
-      field.boringFieldController.validate();
+      field.controller.validate();
     }
   }
 }

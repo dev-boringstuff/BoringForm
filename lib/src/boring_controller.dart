@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-class BoringFieldController<T> {
+class BoringController<T> {
   T? Function() getValue = () => null;
   bool Function() isValid = () => true;
   void Function(T value) setValue = (value) {};

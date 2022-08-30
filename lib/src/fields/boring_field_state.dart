@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 abstract class BoringFieldState<T extends BoringField> extends State<T> {
   @override
   void initState() {
-    widget.boringFieldController.addValidationCallback(validate);
-    widget.boringFieldController.addResetCallback(reset);
+    widget.controller.addValidationCallback(validate);
+    widget.controller.addResetCallback(reset);
     super.initState();
   }
 

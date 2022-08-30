@@ -1,13 +1,13 @@
-import 'package:boring_form_builder/boring_form_builder.dart';
-import 'package:flutter/widgets.dart';
+import 'package:boring_form_builder/src/boring_controller.dart';
+import 'package:flutter/material.dart';
 
 abstract class BoringField<T> extends StatefulWidget {
   BoringField(
       {Key? key,
-      required this.boringFieldController,
+      required this.controller,
       this.initialValue,
       required this.jsonKey,
-      this.label,
+      this.title,
       this.helperText,
       this.lg = 12,
       this.md = 12,
@@ -15,13 +15,13 @@ abstract class BoringField<T> extends StatefulWidget {
       this.xs = 12,
       this.validator})
       : super(key: key) {
-    boringFieldController.getValue = () => value;
-    boringFieldController.isValid = () => isValid;
+    controller.getValue = () => value;
+    controller.isValid = () => isValid;
   }
 
   final int xs, sm, md, lg;
 
-  final BoringFieldController boringFieldController;
+  final BoringController controller;
   void onChanged(T value);
 
   bool get isValid;
@@ -30,7 +30,7 @@ abstract class BoringField<T> extends StatefulWidget {
   final String jsonKey;
 
   final T? initialValue;
-  final String? label;
+  final String? title;
   final String? helperText;
   final String? Function(String)? validator;
 }

@@ -1,21 +1,24 @@
-import 'package:boring_form_builder/boring_form_builder.dart';
+import 'package:boring_form_builder/src/boring_section.dart';
+import 'package:boring_form_builder/src/fields/boring_field.dart';
+import 'package:boring_form_builder/src/fields/boring_field_state.dart';
 import 'package:flutter/material.dart';
 
-class BoringFormNew extends BoringField {
-  BoringFormNew({
+class BoringForm extends BoringField {
+  BoringForm({
     super.key,
     required this.sections,
-    this.title,
+    super.title,
     this.description,
     this.subtitle,
-    required super.boringFieldController,
+    required super.controller,
   }) : super(jsonKey: '');
 
   final List<BoringSection> sections;
-  final String? title, subtitle, description;
+  final String? subtitle;
+  final String? description;
 
   @override
-  BoringFieldState<BoringFormNew> createState() => _BoringFormState();
+  BoringFieldState<BoringForm> createState() => _BoringFormState();
 
   @override
   bool get isValid => sections.every((element) => element.isValid);
@@ -40,7 +43,7 @@ class BoringFormNew extends BoringField {
   }
 }
 
-class _BoringFormState extends BoringFieldState<BoringFormNew> {
+class _BoringFormState extends BoringFieldState<BoringForm> {
   double sectionWidth = double.infinity;
 
   @override
@@ -62,6 +65,9 @@ class _BoringFormState extends BoringFieldState<BoringFormNew> {
                   style: Theme.of(context).textTheme.headline6,
                 )
               : const SizedBox.shrink(),
+          widget.description != null
+              ? Text(widget.description!)
+              : const SizedBox.shrink(),
           ...widget.sections,
         ],
       ),
@@ -71,14 +77,14 @@ class _BoringFormState extends BoringFieldState<BoringFormNew> {
   @override
   void reset() {
     for (var field in widget.sections) {
-      field.boringFieldController.reset();
+      field.controller.reset();
     }
   }
 
   @override
   void validate() {
     for (var field in widget.sections) {
-      field.boringFieldController.validate();
+      field.controller.validate();
     }
   }
 }

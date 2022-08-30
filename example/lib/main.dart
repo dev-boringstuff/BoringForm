@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-  final BoringFieldController formController1 = BoringFieldController();
+  final BoringController formController1 = BoringController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,16 +40,19 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                BoringFormNew(
-                  boringFieldController: formController1,
+                BoringForm(
+                  title: 'Titolo',
+                  controller: formController1,
+                  description: 'The most beautiful form',
                   sections: [
                     BoringSection(
-                      boringFieldController: BoringFieldController(),
+                      title: 'Title',
+                      controller: BoringController(),
                       jsonKey: "section",
                       fields: [
                         BoringTexField(
                           jsonKey: "text1",
-                          controller: BoringFieldController(),
+                          controller: BoringController(),
                         )
                       ],
                     ),

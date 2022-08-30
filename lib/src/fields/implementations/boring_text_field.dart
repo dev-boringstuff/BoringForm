@@ -1,18 +1,19 @@
-import 'package:boring_form_builder/boring_form_builder.dart';
+import 'package:boring_form_builder/src/fields/boring_field.dart';
+import 'package:boring_form_builder/src/fields/boring_field_state.dart';
 import 'package:flutter/material.dart';
 
 class BoringTexField extends BoringField<String> {
-  BoringTexField(
-      {Key? key,
-      required BoringFieldController controller,
-      required String jsonKey,
-      this.defaultValue = "",
-      this.onValueChanged,
-      this.validator})
-      : super(boringFieldController: controller, key: key, jsonKey: jsonKey);
+  BoringTexField({
+    super.initialValue = '',
+    this.onValueChanged,
+    this.validator,
+    required super.controller,
+    super.title,
+    required super.jsonKey,
+    super.key,
+  });
 
   final TextEditingController textController = TextEditingController();
-  final String defaultValue;
   @override
   final String? Function(String)? validator;
   final void Function(String)? onValueChanged;
@@ -58,6 +59,6 @@ class _BoringTextFieldState extends BoringFieldState<BoringTexField> {
 
   @override
   void reset() {
-    widget.textController.text = widget.defaultValue;
+    widget.textController.text = widget.initialValue ?? '';
   }
 }
