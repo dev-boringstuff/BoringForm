@@ -2,8 +2,8 @@ import 'package:boring_form_builder/src/fields/boring_field.dart';
 import 'package:boring_form_builder/src/fields/boring_field_state.dart';
 import 'package:flutter/material.dart';
 
-class BoringTextField extends BoringField<String> {
-  BoringTextField({
+class BoringPasswordField extends BoringField<String> {
+  BoringPasswordField({
     super.initialValue = '',
     this.onValueChanged,
     this.validator,
@@ -11,8 +11,6 @@ class BoringTextField extends BoringField<String> {
     super.title,
     super.helperText,
     required super.jsonKey,
-    this.enableSuggestions = false,
-    this.autocorrect = false,
     super.key,
     super.xs,
     super.sm,
@@ -20,8 +18,6 @@ class BoringTextField extends BoringField<String> {
     super.lg,
   });
 
-  final bool enableSuggestions;
-  final bool autocorrect;
   final TextEditingController textController = TextEditingController();
   @override
   final String? Function(String)? validator;
@@ -39,7 +35,8 @@ class BoringTextField extends BoringField<String> {
   bool get isValid =>
       (validator != null) ? validator?.call(value) == null : true;
   @override
-  BoringFieldState<BoringTextField> createState() => _BoringTextFieldState();
+  BoringFieldState<BoringPasswordField> createState() =>
+      _BoringTextFieldState();
 
   @override
   set setValue(String value) {
@@ -47,8 +44,9 @@ class BoringTextField extends BoringField<String> {
   }
 }
 
-class _BoringTextFieldState extends BoringFieldState<BoringTextField> {
+class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
   String? errorText;
+  bool obscureText = true;
 
   @override
   void validate() {
@@ -61,13 +59,32 @@ class _BoringTextFieldState extends BoringFieldState<BoringTextField> {
   Widget build(BuildContext context) {
     return TextField(
       controller: widget.textController,
-      enableSuggestions: widget.enableSuggestions,
-      autocorrect: widget.autocorrect,
+      obscureText: obscureText,
+      enableSuggestions: false,
+      autocorrect: false,
       onChanged: (value) => widget.onChanged(value),
       decoration: InputDecoration(
         label: Text(widget.title ?? ''),
         helperText: widget.helperText,
         errorText: errorText,
+        suffixIcon: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            child: Center(
+              widthFactor: 0,
+              child: Icon(
+                obscureText
+                    ? Icons.visibility_outlined
+                    : Icons.visibility_off_outlined,
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                obscureText = !obscureText;
+              });
+            },
+          ),
+        ),
       ),
     );
   }
