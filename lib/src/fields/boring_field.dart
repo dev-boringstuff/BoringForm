@@ -9,6 +9,7 @@ abstract class BoringField<T> extends StatefulWidget {
       required this.jsonKey,
       this.title,
       this.helperText,
+      this.onChanged,
       this.lg = 12,
       this.md = 12,
       this.sm = 12,
@@ -22,7 +23,7 @@ abstract class BoringField<T> extends StatefulWidget {
   final int xs, sm, md, lg;
 
   final BoringController controller;
-  void onChanged(T value);
+  final void Function(T)? onChanged;
 
   bool get isValid;
   T get value;

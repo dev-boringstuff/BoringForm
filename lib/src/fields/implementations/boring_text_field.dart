@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 class BoringTextField extends BoringField<String> {
   BoringTextField({
     super.initialValue = '',
-    this.onValueChanged,
     this.validator,
     required super.controller,
     super.title,
@@ -13,6 +12,7 @@ class BoringTextField extends BoringField<String> {
     required super.jsonKey,
     this.enableSuggestions = false,
     this.autocorrect = false,
+    super.onChanged,
     super.key,
     super.xs,
     super.sm,
@@ -25,15 +25,9 @@ class BoringTextField extends BoringField<String> {
   final TextEditingController textController = TextEditingController();
   @override
   final String? Function(String)? validator;
-  final void Function(String)? onValueChanged;
 
   @override
   String get value => textController.text;
-
-  @override
-  void onChanged(String value) {
-    onValueChanged?.call(value);
-  }
 
   @override
   bool get isValid =>
@@ -63,7 +57,7 @@ class _BoringTextFieldState extends BoringFieldState<BoringTextField> {
       controller: widget.textController,
       enableSuggestions: widget.enableSuggestions,
       autocorrect: widget.autocorrect,
-      onChanged: (value) => widget.onChanged(value),
+      onChanged: (value) => widget.onChanged?.call(value),
       decoration: InputDecoration(
         label: Text(widget.title ?? ''),
         helperText: widget.helperText,

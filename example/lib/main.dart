@@ -77,6 +77,7 @@ class _HomePageState extends State<HomePage> {
                                   return null;
                                 }
                               },
+                              onChanged: (p0) => debugPrint(p0),
                               controller: BoringController(),
                             ),
                             BoringTextField(

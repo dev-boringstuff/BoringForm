@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class BoringPasswordField extends BoringField<String> {
   BoringPasswordField({
     super.initialValue = '',
-    this.onValueChanged,
+    super.onChanged,
     this.validator,
     required super.controller,
     super.title,
@@ -21,15 +21,9 @@ class BoringPasswordField extends BoringField<String> {
   final TextEditingController textController = TextEditingController();
   @override
   final String? Function(String)? validator;
-  final void Function(String)? onValueChanged;
 
   @override
   String get value => textController.text;
-
-  @override
-  void onChanged(String value) {
-    onValueChanged?.call(value);
-  }
 
   @override
   bool get isValid =>
@@ -62,7 +56,7 @@ class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
       obscureText: obscureText,
       enableSuggestions: false,
       autocorrect: false,
-      onChanged: (value) => widget.onChanged(value),
+      onChanged: (value) => widget.onChanged?.call(value),
       decoration: InputDecoration(
         label: Text(widget.title ?? ''),
         helperText: widget.helperText,

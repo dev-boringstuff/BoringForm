@@ -24,11 +24,6 @@ class BoringForm extends BoringField {
   bool get isValid => sections.every((element) => element.isValid);
 
   @override
-  void onChanged(value) {
-    throw UnimplementedError();
-  }
-
-  @override
   set setValue(value) {
     throw UnimplementedError();
   }
