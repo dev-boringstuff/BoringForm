@@ -164,23 +164,24 @@ class _HomePageState extends State<HomePage> {
                               initialValue: 'Rome',
                               controller: BoringController(),
                             ),
-                            /*
                             BoringIntField(
                               jsonKey: 'cap',
-                              label: 'cap',
+                              title: 'cap',
                               initialValue: 2806,
                               helperText: 'xxxxx',
                               validator: (v) {
-                                if ((v?.toString().length ?? 0) != 5) {
+                                if (v.toString().length != 5) {
                                   return 'cap should be long 5 chars';
                                 } else {
                                   return null;
                                 }
                               },
                               onChanged: ((value) {
-                                debugPrint("CAP Changed: $value");
+                                debugPrint("CAP changed: $value");
                               }),
+                              controller: BoringController(),
                             ),
+                            /*
                             BoringDoubleField(
                               jsonKey: 'double',
                               label: 'double',

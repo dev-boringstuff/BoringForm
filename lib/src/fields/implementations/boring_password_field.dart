@@ -41,10 +41,10 @@ class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
   bool obscureText = true;
 
   @override
-  void validate() {
-    setState(() {
-      errorText = widget.validator?.call(widget.value);
-    });
+  void initState() {
+    super.initState();
+
+    widget.setValue = widget.initialValue ?? '';
   }
 
   @override
@@ -54,7 +54,12 @@ class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
       obscureText: obscureText,
       enableSuggestions: false,
       autocorrect: false,
-      onChanged: (value) => widget.onChanged?.call(value),
+      onChanged: (value) {
+        setState(() {
+          errorText = null;
+        });
+        widget.onChanged?.call(value);
+      },
       decoration: InputDecoration(
         label: Text(widget.title ?? ''),
         helperText: widget.helperText,
@@ -79,6 +84,13 @@ class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
         ),
       ),
     );
+  }
+
+  @override
+  void validate() {
+    setState(() {
+      errorText = widget.validator?.call(widget.value);
+    });
   }
 
   @override

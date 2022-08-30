@@ -23,10 +23,10 @@ abstract class BoringField<T> extends StatefulWidget {
   final int xs, sm, md, lg;
 
   final BoringController controller;
-  final void Function(T)? onChanged;
+  final void Function(T?)? onChanged;
 
   bool get isValid;
-  T get value;
+  T? get value;
   set setValue(T value);
   final String jsonKey;
 
