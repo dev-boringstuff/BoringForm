@@ -8,3 +8,4 @@ export 'src/fields/implementations/boring_text_field.dart';
 export 'src/fields/implementations/boring_int_field.dart';
 export 'src/fields/implementations/boring_double_field.dart';
 export 'src/fields/implementations/boring_password_field.dart';
+export 'src/fields/implementations/boring_dropdown.dart';

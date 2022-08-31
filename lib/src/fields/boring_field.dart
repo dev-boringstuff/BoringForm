@@ -10,6 +10,7 @@ abstract class BoringField<T> extends StatefulWidget {
       this.title,
       this.helperText,
       this.onChanged,
+      this.required = false,
       this.lg = 12,
       this.md = 12,
       this.sm = 12,
@@ -34,4 +35,5 @@ abstract class BoringField<T> extends StatefulWidget {
   final String? title;
   final String? helperText;
   final String? Function(String)? validator;
+  final bool required;
 }

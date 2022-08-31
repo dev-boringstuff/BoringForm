@@ -123,14 +123,13 @@ class _HomePageState extends State<HomePage> {
                               title: 'label2',
                               controller: BoringController(),
                             ),
-                            /*
-                            const BoringDropdown(
+                            BoringDropdown(
                               lg: 4,
                               md: 6,
                               jsonKey: 'dropdown',
-                              label: 'dropdown',
-                              required: 'Required',
-                              items: <DropdownMenuItem<String>>[
+                              title: 'dropdown',
+                              required: true,
+                              items: const <DropdownMenuItem<String>>[
                                 DropdownMenuItem<String>(
                                   value: 'One',
                                   child: Text('One'),
@@ -144,7 +143,9 @@ class _HomePageState extends State<HomePage> {
                                   child: Text('Free'),
                                 ),
                               ],
+                              controller: BoringController(),
                             ),
+                            /*
                             const BoringCheckbox(
                               initialValue: true,
                               jsonKey: 'key4',
