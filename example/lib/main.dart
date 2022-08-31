@@ -145,13 +145,12 @@ class _HomePageState extends State<HomePage> {
                               ],
                               controller: BoringController(),
                             ),
-                            /*
-                            const BoringCheckbox(
+                            BoringCheckbox(
                               initialValue: true,
                               jsonKey: 'key4',
-                              label: 'label4',
+                              title: 'label4',
+                              controller: BoringController(),
                             ),
-                            */
                           ],
                         ),
                         BoringSection(
