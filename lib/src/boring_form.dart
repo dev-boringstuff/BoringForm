@@ -3,7 +3,7 @@ import 'package:boring_form_builder/src/fields/boring_field.dart';
 import 'package:boring_form_builder/src/fields/boring_field_state.dart';
 import 'package:flutter/material.dart';
 
-class BoringForm extends BoringField {
+class BoringForm extends BoringField<Map<String, dynamic>> {
   BoringForm({
     super.key,
     required this.sections,
@@ -18,7 +18,8 @@ class BoringForm extends BoringField {
   final String? description;
 
   @override
-  BoringFieldState<BoringForm> createState() => _BoringFormState();
+  BoringFieldState<BoringForm, Map<String, dynamic>> createState() =>
+      _BoringFormState();
 
   @override
   bool get isValid => sections.every((element) => element.isValid);
@@ -38,7 +39,8 @@ class BoringForm extends BoringField {
   }
 }
 
-class _BoringFormState extends BoringFieldState<BoringForm> {
+class _BoringFormState
+    extends BoringFieldState<BoringForm, Map<String, dynamic>> {
   double sectionWidth = double.infinity;
 
   @override
@@ -67,6 +69,11 @@ class _BoringFormState extends BoringFieldState<BoringForm> {
         ],
       ),
     );
+  }
+
+  @override
+  void setValue(Map<String, dynamic>? newValue) {
+    throw UnimplementedError();
   }
 
   @override

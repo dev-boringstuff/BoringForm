@@ -186,29 +186,30 @@ class _HomePageState extends State<HomePage> {
                               initialValue: 5.5,
                               controller: BoringController(),
                             ),
-                            /*
                             BoringArrayField(
                               expandable: true,
                               jsonKey: 'array',
-                              label: 'Array field',
-                              row: [
+                              title: 'Array field',
+                              fields: [
                                 BoringIntField(
-                                    lg: 6,
-                                    md: 6,
-                                    sm: 6,
-                                    xs: 6,
-                                    validator: (v) => (v ?? 0) < 10
-                                        ? 'Must be greater than 10'
-                                        : null,
-                                    jsonKey: 'int',
-                                    label: 'int'),
+                                  lg: 6,
+                                  md: 6,
+                                  sm: 6,
+                                  xs: 6,
+                                  validator: (v) => (v ?? 0) < 10
+                                      ? 'Must be greater than 10'
+                                      : null,
+                                  jsonKey: 'int',
+                                  title: 'int',
+                                  controller: BoringController(),
+                                ),
                                 BoringPasswordField(
                                   lg: 6,
                                   md: 6,
                                   sm: 6,
                                   xs: 6,
                                   jsonKey: 'password',
-                                  label: 'Password',
+                                  title: 'Password',
                                   validator: (v) {
                                     if ((v?.length ?? 0) > 25) {
                                       return 'Password should be less than 25 chars';
@@ -216,10 +217,11 @@ class _HomePageState extends State<HomePage> {
                                       return null;
                                     }
                                   },
+                                  controller: BoringController(),
                                 ),
                               ],
+                              controller: BoringController(),
                             ),
-                            */
                           ],
                         ),
                       ],

@@ -32,7 +32,7 @@ class BoringIntField extends BoringField<int> {
 
   @override
   set setValue(int? value) {
-    textController.text = value.toString();
+    textController.text = value != null ? value.toString() : '';
   }
 }
 

@@ -1,4 +1,4 @@
-import 'package:boring_form_builder/src/boring_support_value.dart';
+import 'package:boring_form_builder/src/boring_support.dart';
 import 'package:boring_form_builder/src/fields/boring_field.dart';
 import 'package:boring_form_builder/src/fields/boring_field_state.dart';
 import 'package:flutter/material.dart';
@@ -27,20 +27,20 @@ class BoringDateField extends BoringField<DateTime> {
 
   final TextEditingController textController = TextEditingController();
   @override
-  DateTime get value => supportValue.value;
+  DateTime? get value => supportValue.value;
 
   @override
   bool get isValid =>
       (validator != null) ? validator?.call(value) == null : true;
   @override
-  BoringFieldState<BoringDateField> createState() => _BoringTextFieldState();
+  BoringFieldState<BoringDateField> createState() => _BoringDateFieldState();
 
   @override
   set setValue(DateTime? value) {
     supportValue.value = value;
   }
 
-  final BoringSupportValue supportValue = BoringSupportValue();
+  final BoringSupportValue<DateTime> supportValue = BoringSupportValue();
   final String dateFormat;
   final Locale locale;
   final DateTime initialDate;
@@ -48,7 +48,7 @@ class BoringDateField extends BoringField<DateTime> {
   final DateTime lastDate;
 }
 
-class _BoringTextFieldState extends BoringFieldState<BoringDateField> {
+class _BoringDateFieldState extends BoringFieldState<BoringDateField> {
   final textController = TextEditingController();
   String? errorText;
 
