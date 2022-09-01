@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                               helperText: 'First name',
                               initialValue: 'Andrea',
                               validator: (v) {
-                                if (v.length > 25) {
+                                if ((v?.length ?? 0) > 25) {
                                   return 'Name should be less than 25 chars';
                                 } else {
                                   return null;
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                               jsonKey: 'password',
                               title: 'Password',
                               validator: (v) {
-                                if (v.length > 25) {
+                                if ((v?.length ?? 0) > 25) {
                                   return 'Password should be less than 25 chars';
                                 } else {
                                   return null;
@@ -102,20 +102,19 @@ class _HomePageState extends State<HomePage> {
                               },
                               controller: BoringController(),
                             ),
-                            /*
                             BoringDateField(
                               lg: 4,
                               md: 6,
                               jsonKey: 'key1',
-                              label: 'label1',
+                              title: 'label1',
                               initialValue: DateTime.now(),
                               locale: const Locale('it'),
                               dateFormat: 'dd/MM/yyyy',
                               initialDate: DateTime.now(),
                               firstDate: DateTime(1900),
                               lastDate: DateTime(2100),
+                              controller: BoringController(),
                             ),
-                            */
                             BoringTextField(
                               lg: 4,
                               md: 6,
@@ -239,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                               jsonKey: 'test',
                               title: 'Test field',
                               validator: (v) {
-                                if ((v.length) <= 5) {
+                                if ((v?.length ?? 0) <= 5) {
                                   return 'bug should be longer than 5 chars';
                                 } else {
                                   return null;

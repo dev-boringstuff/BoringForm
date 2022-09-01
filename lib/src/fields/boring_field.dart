@@ -34,6 +34,6 @@ abstract class BoringField<T> extends StatefulWidget {
   final T? initialValue;
   final String? title;
   final String? helperText;
-  final String? Function(String)? validator;
+  final String? Function(T?)? validator;
   final bool required;
 }

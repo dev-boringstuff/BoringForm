@@ -25,9 +25,8 @@ class BoringIntField extends BoringField<int> {
   int? get value => int.tryParse(textController.text);
 
   @override
-  bool get isValid => (validator != null)
-      ? validator?.call(value?.toString() ?? '') == null
-      : true;
+  bool get isValid =>
+      (validator != null) ? validator?.call(value) == null : true;
   @override
   BoringFieldState<BoringIntField> createState() => _BoringTextFieldState();
 
@@ -72,7 +71,7 @@ class _BoringTextFieldState extends BoringFieldState<BoringIntField> {
   @override
   void validate() {
     setState(() {
-      errorText = widget.validator?.call(widget.value?.toString() ?? '');
+      errorText = widget.validator?.call(widget.value);
     });
   }
 
