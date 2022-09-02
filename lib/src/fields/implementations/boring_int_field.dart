@@ -1,3 +1,4 @@
+import 'package:boring_form_builder/src/boring_support.dart';
 import 'package:boring_form_builder/src/fields/boring_field.dart';
 import 'package:boring_form_builder/src/fields/boring_field_state.dart';
 import 'package:flutter/material.dart';
@@ -19,25 +20,27 @@ class BoringIntField extends BoringField<int> {
     super.lg,
   });
 
-  final TextEditingController textController = TextEditingController();
-
   @override
-  int? get value => int.tryParse(textController.text);
+  int? get value => supportValue.value;
 
   @override
   bool get isValid =>
       (validator != null) ? validator?.call(value) == null : true;
   @override
-  BoringFieldState<BoringIntField> createState() => _BoringTextFieldState();
+  BoringFieldState<BoringIntField, int> createState() =>
+      _BoringTextFieldState();
 
   @override
   set setValue(int? value) {
-    textController.text = value != null ? value.toString() : '';
+    controller.setValue(value);
   }
+
+  final BoringSupportValue<int> supportValue = BoringSupportValue();
 }
 
-class _BoringTextFieldState extends BoringFieldState<BoringIntField> {
+class _BoringTextFieldState extends BoringFieldState<BoringIntField, int> {
   String? errorText;
+  final TextEditingController textController = TextEditingController();
 
   @override
   void initState() {
@@ -49,7 +52,7 @@ class _BoringTextFieldState extends BoringFieldState<BoringIntField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.textController,
+      controller: textController,
       enableSuggestions: false,
       autocorrect: false,
       keyboardType: TextInputType.number,
@@ -58,6 +61,7 @@ class _BoringTextFieldState extends BoringFieldState<BoringIntField> {
         setState(() {
           errorText = null;
         });
+        widget.supportValue.value = int.tryParse(value);
         widget.onChanged?.call(int.tryParse(value));
       },
       decoration: InputDecoration(
@@ -69,6 +73,12 @@ class _BoringTextFieldState extends BoringFieldState<BoringIntField> {
   }
 
   @override
+  void setValue(int? newValue) {
+    widget.supportValue.value = newValue;
+    textController.text = newValue != null ? newValue.toString() : '';
+  }
+
+  @override
   void validate() {
     setState(() {
       errorText = widget.validator?.call(widget.value);
@@ -77,6 +87,6 @@ class _BoringTextFieldState extends BoringFieldState<BoringIntField> {
 
   @override
   void reset() {
-    widget.textController.text = widget.initialValue?.toString() ?? '';
+    textController.text = widget.initialValue?.toString() ?? '';
   }
 }

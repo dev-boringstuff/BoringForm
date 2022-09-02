@@ -26,7 +26,8 @@ class BoringDropdown<T> extends BoringField<T> {
   @override
   bool get isValid => this.required ? controller.getValue() != null : true;
   @override
-  BoringFieldState<BoringDropdown<T>> createState() => _BoringDropdownState();
+  BoringFieldState<BoringDropdown<T>, T> createState() =>
+      _BoringDropdownState();
 
   @override
   set setValue(T? value) {
@@ -37,7 +38,7 @@ class BoringDropdown<T> extends BoringField<T> {
   final BoringSupportValue<T> supportValue = BoringSupportValue();
 }
 
-class _BoringDropdownState<T> extends BoringFieldState<BoringDropdown<T>> {
+class _BoringDropdownState<T> extends BoringFieldState<BoringDropdown<T>, T> {
   bool error = false;
 
   @override
@@ -64,6 +65,11 @@ class _BoringDropdownState<T> extends BoringFieldState<BoringDropdown<T>> {
       },
       items: widget.items,
     );
+  }
+
+  @override
+  void setValue(T? newValue) {
+    throw UnimplementedError();
   }
 
   @override

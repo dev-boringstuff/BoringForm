@@ -25,7 +25,6 @@ class BoringDateField extends BoringField<DateTime> {
     super.lg,
   });
 
-  final TextEditingController textController = TextEditingController();
   @override
   DateTime? get value => supportValue.value;
 
@@ -33,11 +32,12 @@ class BoringDateField extends BoringField<DateTime> {
   bool get isValid =>
       (validator != null) ? validator?.call(value) == null : true;
   @override
-  BoringFieldState<BoringDateField> createState() => _BoringDateFieldState();
+  BoringFieldState<BoringDateField, DateTime> createState() =>
+      _BoringDateFieldState();
 
   @override
   set setValue(DateTime? value) {
-    supportValue.value = value;
+    controller.setValue(value);
   }
 
   final BoringSupportValue<DateTime> supportValue = BoringSupportValue();
@@ -48,7 +48,8 @@ class BoringDateField extends BoringField<DateTime> {
   final DateTime lastDate;
 }
 
-class _BoringDateFieldState extends BoringFieldState<BoringDateField> {
+class _BoringDateFieldState
+    extends BoringFieldState<BoringDateField, DateTime> {
   final textController = TextEditingController();
   String? errorText;
 
@@ -93,6 +94,13 @@ class _BoringDateFieldState extends BoringFieldState<BoringDateField> {
         }
       },
     );
+  }
+
+  @override
+  void setValue(DateTime? newValue) {
+    widget.supportValue.value = newValue;
+    textController.text =
+        newValue != null ? DateFormat(widget.dateFormat).format(newValue) : '';
   }
 
   @override

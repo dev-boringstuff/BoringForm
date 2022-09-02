@@ -33,7 +33,8 @@ class BoringArrayField extends BoringField<List<Map<String, dynamic>>> {
   }
 
   @override
-  BoringFieldState<BoringArrayField> createState() => _BoringArrayFieldState();
+  BoringFieldState<BoringArrayField, List<Map<String, dynamic>>>
+      createState() => _BoringArrayFieldState();
 
   @override
   set setValue(List<Map<String, dynamic>>? value) {
@@ -44,7 +45,8 @@ class BoringArrayField extends BoringField<List<Map<String, dynamic>>> {
       BoringSupportValue();
 }
 
-class _BoringArrayFieldState extends BoringFieldState<BoringArrayField> {
+class _BoringArrayFieldState
+    extends BoringFieldState<BoringArrayField, List<Map<String, dynamic>>> {
   String? errorText;
   bool isArrayExpanded = true;
   List<List<BoringField>> rows = [];
@@ -164,6 +166,11 @@ class _BoringArrayFieldState extends BoringFieldState<BoringArrayField> {
           return field;
         }).toList());
     });
+  }
+
+  @override
+  void setValue(List<Map<String, dynamic>>? newValue) {
+    throw UnimplementedError();
   }
 
   @override

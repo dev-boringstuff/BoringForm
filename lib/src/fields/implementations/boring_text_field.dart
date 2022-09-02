@@ -63,6 +63,7 @@ class _BoringTextFieldState extends BoringFieldState<BoringTextField, String> {
         setState(() {
           errorText = null;
         });
+        widget.supportValue.value = value;
         widget.onChanged?.call(value);
       },
       decoration: InputDecoration(
@@ -75,6 +76,7 @@ class _BoringTextFieldState extends BoringFieldState<BoringTextField, String> {
 
   @override
   void setValue(String? newValue) {
+    widget.supportValue.value = newValue;
     textController.text = newValue ?? '';
   }
 

@@ -37,8 +37,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final form1Controller = BoringController();
-  final form2Controller = BoringController();
+  final form1Controller = BoringController<Map<String, dynamic>>();
+  final form2Controller = BoringController<Map<String, dynamic>>();
   final textFieldController = BoringController<String>();
 
   @override

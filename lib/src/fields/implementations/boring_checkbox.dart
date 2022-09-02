@@ -24,7 +24,8 @@ class BoringCheckbox extends BoringField<bool> {
   @override
   bool get isValid => this.required ? controller.getValue() != null : true;
   @override
-  BoringFieldState<BoringCheckbox> createState() => _BoringCheckboxState();
+  BoringFieldState<BoringCheckbox, bool> createState() =>
+      _BoringCheckboxState();
 
   @override
   set setValue(bool? value) {
@@ -34,7 +35,7 @@ class BoringCheckbox extends BoringField<bool> {
   final BoringSupportValue<bool> supportValue = BoringSupportValue();
 }
 
-class _BoringCheckboxState extends BoringFieldState<BoringCheckbox> {
+class _BoringCheckboxState extends BoringFieldState<BoringCheckbox, bool> {
   @override
   void initState() {
     super.initState();
@@ -56,6 +57,11 @@ class _BoringCheckboxState extends BoringFieldState<BoringCheckbox> {
         widget.onChanged?.call(newValue);
       },
     );
+  }
+
+  @override
+  void setValue(bool? newValue) {
+    throw UnimplementedError();
   }
 
   @override

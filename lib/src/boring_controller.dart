@@ -13,7 +13,7 @@ class BoringController<T> {
     _resetFunction = function;
   }
 
-  void setValue(T value) {
+  void setValue(T? value) {
     _setValueFunction?.call(value);
   }
 
@@ -28,4 +28,6 @@ class BoringController<T> {
   void reset() {
     _resetFunction?.call();
   }
+
+  Type get controllerType => int;
 }

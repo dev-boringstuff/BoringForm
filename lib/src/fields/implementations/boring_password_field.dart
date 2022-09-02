@@ -1,3 +1,4 @@
+import 'package:boring_form_builder/src/boring_support.dart';
 import 'package:boring_form_builder/src/fields/boring_field.dart';
 import 'package:boring_form_builder/src/fields/boring_field_state.dart';
 import 'package:flutter/material.dart';
@@ -18,27 +19,29 @@ class BoringPasswordField extends BoringField<String> {
     super.lg,
   });
 
-  final TextEditingController textController = TextEditingController();
-
   @override
-  String get value => textController.text;
+  String get value => supportValue.value ?? '';
 
   @override
   bool get isValid =>
       (validator != null) ? validator?.call(value) == null : true;
   @override
-  BoringFieldState<BoringPasswordField> createState() =>
+  BoringFieldState<BoringPasswordField, String> createState() =>
       _BoringTextFieldState();
 
   @override
   set setValue(String value) {
-    textController.text = value;
+    controller.setValue(value);
   }
+
+  final BoringSupportValue<String> supportValue = BoringSupportValue();
 }
 
-class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
+class _BoringTextFieldState
+    extends BoringFieldState<BoringPasswordField, String> {
   String? errorText;
   bool obscureText = true;
+  final TextEditingController textController = TextEditingController();
 
   @override
   void initState() {
@@ -50,7 +53,7 @@ class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: widget.textController,
+      controller: textController,
       obscureText: obscureText,
       enableSuggestions: false,
       autocorrect: false,
@@ -58,6 +61,7 @@ class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
         setState(() {
           errorText = null;
         });
+        widget.supportValue.value = value;
         widget.onChanged?.call(value);
       },
       decoration: InputDecoration(
@@ -87,6 +91,12 @@ class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
   }
 
   @override
+  void setValue(String? newValue) {
+    widget.supportValue.value = newValue;
+    textController.text = newValue ?? '';
+  }
+
+  @override
   void validate() {
     setState(() {
       errorText = widget.validator?.call(widget.value);
@@ -95,6 +105,6 @@ class _BoringTextFieldState extends BoringFieldState<BoringPasswordField> {
 
   @override
   void reset() {
-    widget.textController.text = widget.initialValue ?? '';
+    textController.text = widget.initialValue ?? '';
   }
 }
