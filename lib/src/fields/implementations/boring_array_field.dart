@@ -162,7 +162,8 @@ class _BoringArrayFieldState
     setState(() {
       rows = rows
         ..add(widget.fields.map((field) {
-          field.controller = BoringController();
+          BoringController newController = field.generateNewController();
+          field.controller = newController;
           return field;
         }).toList());
     });

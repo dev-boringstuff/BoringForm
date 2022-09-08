@@ -43,4 +43,9 @@ abstract class BoringField<T> extends StatefulWidget {
   final String? helperText;
   final String? Function(T?)? validator;
   final bool required;
+
+  BoringController generateNewController() {
+    BoringController newController = BoringController<T>();
+    return newController;
+  }
 }
